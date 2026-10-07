@@ -244,16 +244,15 @@ class KundallyPanel(Gtk.Window):
         self.jobs = {
             "wan": (public_ip, 60),
             "iface": (default_interface, 10),
+            "local_ip": (local_ip, 10),
             "city": (city, 300),
             "cpu": (self.collector.cpu, 5),
             "gput": (gpu_temperature, 5),
             "ram": (self.collector.ram, 10),
         }
-        # Dış IP isteği tamamlanana kadar satır boş kalmasın.
+        # Yerel IP, ağ arayüzünün hemen altında ayrı bir satırda görünür.
         initial_ip = local_ip()
-        self.labels["wan"].set_text(
-            f"{initial_ip} (yerel)" if initial_ip != "—" else "IP aranıyor…"
-        )
+        self.labels["local_ip"].set_text(initial_ip)
         for name, (_function, interval) in self.jobs.items():
             self.refresh(name)
             GLib.timeout_add_seconds(interval, self.refresh, name)
@@ -301,8 +300,9 @@ class KundallyPanel(Gtk.Window):
 
         self.add_line()
         self.hud.pack_start(self.make_label("NETWORK", "title", 0.0), False, False, 0)
-        self.add_row("IP", "wan")
+        self.add_row("WAN", "wan")
         self.add_row("IF", "iface")
+        self.add_row("IP", "local_ip")
         self.add_row("LOC", "city")
         self.add_line()
         self.hud.pack_start(self.make_label("SYSTEM", "title", 0.0), False, False, 0)
@@ -386,8 +386,8 @@ class KundallyPanel(Gtk.Window):
             value = "—"
         self.labels[name].set_text(value)
         self.labels[name].set_tooltip_text(f"Son yenileme: {datetime.now():%H:%M:%S}")
-        if name == "wan":
-            print(f"KundALLY IP sonucu: {value}", file=sys.stderr, flush=True)
+        if name in ("wan", "local_ip"):
+            print(f"KundALLY {name} sonucu: {value}", file=sys.stderr, flush=True)
         return False
 
     def refresh_all(self, *_args) -> None:

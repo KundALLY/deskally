@@ -1,5 +1,10 @@
 # Değişiklik günlüğü
 
+## 0.2.3 — 2026-10-08
+
+- Ağ arayüzünün altında ayrı bir yerel `IP` satırı eklendi.
+- Ağ bölümü `WAN`, `IF`, `IP`, `LOC` sırasına getirildi.
+
 ## 0.2.2 — 2026-10-08
 
 - Eski panel sürecinin yeni sürümü engellemesi düzeltildi.

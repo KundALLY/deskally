@@ -10,7 +10,7 @@ KundALLY Panel, Linux masaüstü için küçük ve sürüklenebilir bir sistem b
 - CPU kullanımı ve sıcaklığı
 - GPU sıcaklığı
 - RAM kullanımı
-- Ağ arayüzü, genel IP ve şehir bilgisi
+- Ağ arayüzü, arayüzün yerel IP adresi, genel WAN IP'si ve şehir bilgisi
 - Türkçe tarih, saat ve ayarlanabilir geri sayım
 - Sağ tıkla açılan ayar menüsü
 - Takvim ve saat kutularıyla ayarlanabilen kronometre
