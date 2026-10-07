@@ -5,7 +5,7 @@ from datetime import datetime
 from pathlib import Path
 from unittest import mock
 
-from kundally_panel.collectors import countdown, cpu_percent, human_bytes, local_ip, memory_usage, public_ip, turkish_date
+from kundally_panel.collectors import city, countdown, cpu_percent, human_bytes, local_ip, memory_usage, public_ip, turkish_date
 from kundally_panel.config import DEFAULT_CONFIG, load_config, load_position, save_config, save_position
 from kundally_panel.theme import resolve_color, set_accent
 
@@ -18,7 +18,7 @@ class CollectorTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "meminfo"
             path.write_text("MemTotal: 1048576 kB\nMemAvailable: 524288 kB\n")
-            self.assertEqual(memory_usage(path), "512MiB/1GiB")
+            self.assertEqual(memory_usage(path), "512MiB/1GiB • 50%")
 
     def test_turkish_date(self):
         self.assertEqual(turkish_date(datetime(2026, 10, 8)), "Perşembe 8 Ekim 2026")
@@ -58,6 +58,11 @@ class CollectorTests(unittest.TestCase):
         with mock.patch("kundally_panel.collectors.socket.socket", side_effect=PermissionError), \
              mock.patch("kundally_panel.collectors.subprocess.run", return_value=completed):
             self.assertEqual(local_ip(), "192.168.1.42")
+
+    def test_city_prefers_ipv4_curl_result(self):
+        completed = mock.Mock(returncode=0, stdout="Fethiye\n")
+        with mock.patch("kundally_panel.collectors.subprocess.run", return_value=completed):
+            self.assertEqual(city(), "Fethiye")
 
 
 class ConfigTests(unittest.TestCase):

@@ -1,5 +1,12 @@
 # Değişiklik günlüğü
 
+## 0.4.0 — 2026-10-08
+
+- WAN IP, yerel IP ve şehir görünürlüğü için ayrı ayarlar eklendi.
+- Otomatik şehir bulmaya dört IPv4 kaynağı ve yedek yöntem eklendi.
+- Şehir adını elle belirleme seçeneği eklendi.
+- RAM satırına kullanım yüzdesi eklendi.
+
 ## 0.3.0 — 2026-10-08
 
 - Terminalden kullanılabilen altı renk hazır ayarı eklendi.

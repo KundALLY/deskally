@@ -89,7 +89,7 @@ class SettingsDialog(Gtk.Dialog):
             "İptal", Gtk.ResponseType.CANCEL,
             "Kaydet", Gtk.ResponseType.OK,
         )
-        self.set_default_size(390, -1)
+        self.set_default_size(430, -1)
         self.set_border_width(12)
 
         grid = Gtk.Grid(column_spacing=12, row_spacing=10)
@@ -140,28 +140,38 @@ class SettingsDialog(Gtk.Dialog):
         self.width_spin.set_value(config["panel_width"])
         grid.attach(self.width_spin, 1, 4, 1, 1)
 
+        grid.attach(Gtk.Label(label="Şehir", xalign=0), 0, 5, 1, 1)
+        self.city_entry = Gtk.Entry(text=config["manual_city"])
+        self.city_entry.set_placeholder_text("Boş bırakırsan otomatik bulunur")
+        self.city_entry.set_tooltip_text("Otomatik konum çalışmazsa şehir adını buraya yazabilirsin")
+        grid.attach(self.city_entry, 1, 5, 1, 1)
+
         self.countdown_check = Gtk.CheckButton(label="Geri sayımı göster")
         self.countdown_check.set_active(config["show_countdown"])
-        grid.attach(self.countdown_check, 0, 5, 2, 1)
+        grid.attach(self.countdown_check, 0, 6, 2, 1)
 
-        self.ip_check = Gtk.CheckButton(label="Genel IP adresini göster")
-        self.ip_check.set_active(config["show_public_ip"])
-        grid.attach(self.ip_check, 0, 6, 2, 1)
+        self.wan_check = Gtk.CheckButton(label="WAN IP adresini göster")
+        self.wan_check.set_active(config["show_public_ip"])
+        grid.attach(self.wan_check, 0, 7, 2, 1)
+
+        self.local_ip_check = Gtk.CheckButton(label="Yerel IP adresini göster")
+        self.local_ip_check.set_active(config["show_local_ip"])
+        grid.attach(self.local_ip_check, 0, 8, 2, 1)
 
         self.location_check = Gtk.CheckButton(label="Şehir bilgisini göster")
         self.location_check.set_active(config["show_location"])
-        grid.attach(self.location_check, 0, 7, 2, 1)
+        grid.attach(self.location_check, 0, 9, 2, 1)
 
         self.top_check = Gtk.CheckButton(label="Diğer pencerelerin üstünde tut")
         self.top_check.set_active(config["always_on_top"])
-        grid.attach(self.top_check, 0, 8, 2, 1)
+        grid.attach(self.top_check, 0, 10, 2, 1)
 
         note = Gtk.Label(
             label="İpucu: Paneli sol tuşla tutup sürükle. Menüyü sağ tıkla aç.",
             xalign=0,
         )
         note.set_line_wrap(True)
-        grid.attach(note, 0, 9, 2, 1)
+        grid.attach(note, 0, 11, 2, 1)
         self.show_all()
 
     def values(self) -> dict:
@@ -184,8 +194,10 @@ class SettingsDialog(Gtk.Dialog):
             "title": self.title_entry.get_text().strip() or "KundALLY",
             "countdown_target": target.isoformat(),
             "show_countdown": self.countdown_check.get_active(),
-            "show_public_ip": self.ip_check.get_active(),
+            "show_public_ip": self.wan_check.get_active(),
+            "show_local_ip": self.local_ip_check.get_active(),
             "show_location": self.location_check.get_active(),
+            "manual_city": self.city_entry.get_text().strip(),
             "always_on_top": self.top_check.get_active(),
             "accent_color": accent,
             "panel_width": self.width_spin.get_value_as_int(),
@@ -245,7 +257,7 @@ class KundallyPanel(Gtk.Window):
             "wan": (public_ip, 60),
             "iface": (default_interface, 10),
             "local_ip": (local_ip, 10),
-            "city": (city, 300),
+            "city": (self.city_value, 300),
             "cpu": (self.collector.cpu, 5),
             "gput": (gpu_temperature, 5),
             "ram": (self.collector.ram, 10),
@@ -339,7 +351,7 @@ class KundallyPanel(Gtk.Window):
         self.hud.pack_start(row, False, False, 0)
         self.labels[name] = value
         self.rows[name] = row
-        if name in ("wan", "city"):
+        if name in ("wan", "local_ip", "city"):
             row.set_no_show_all(True)
 
     def build_menu(self) -> Gtk.Menu:
@@ -373,10 +385,16 @@ class KundallyPanel(Gtk.Window):
         self.labels["countdown"].set_text(countdown(self.config["countdown_target"], now))
         return self.alive
 
+    def city_value(self) -> str:
+        manual = self.config.get("manual_city", "").strip()
+        return manual or city()
+
     def refresh(self, name: str) -> bool:
         if not self.alive or name in self.running:
             return self.alive
         if name == "wan" and not self.config["show_public_ip"]:
+            return True
+        if name == "local_ip" and not self.config["show_local_ip"]:
             return True
         if name == "city" and not self.config["show_location"]:
             return True
@@ -398,7 +416,7 @@ class KundallyPanel(Gtk.Window):
             value = "—"
         self.labels[name].set_text(value)
         self.labels[name].set_tooltip_text(f"Son yenileme: {datetime.now():%H:%M:%S}")
-        if name in ("wan", "local_ip"):
+        if name in ("wan", "local_ip", "city"):
             print(f"KundALLY {name} sonucu: {value}", file=sys.stderr, flush=True)
         return False
 
@@ -423,6 +441,7 @@ class KundallyPanel(Gtk.Window):
     def update_visibility(self) -> None:
         self.labels["countdown"].set_visible(self.config["show_countdown"])
         self.rows["wan"].set_visible(self.config["show_public_ip"])
+        self.rows["local_ip"].set_visible(self.config["show_local_ip"])
         self.rows["city"].set_visible(self.config["show_location"])
 
     def show_about(self, *_args) -> None:

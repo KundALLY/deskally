@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 import re
 import socket
 import subprocess
@@ -55,7 +56,9 @@ def memory_usage(path: Path = Path("/proc/meminfo")) -> str:
             values[key] = int(match.group()) * 1024
     total = values.get("MemTotal", 0)
     available = values.get("MemAvailable", values.get("MemFree", 0))
-    return f"{human_bytes(max(0, total - available))}/{human_bytes(total)}"
+    used = max(0, total - available)
+    percent = round(used * 100 / total) if total else 0
+    return f"{human_bytes(used)}/{human_bytes(total)} • {percent}%"
 
 
 def default_interface(path: Path = Path("/proc/net/route")) -> str:
@@ -205,10 +208,36 @@ def public_ip() -> str:
 
 
 def city() -> str:
-    for url in ("https://ipinfo.io/city", "https://ipapi.co/city/"):
+    sources = (
+        ("https://ipinfo.io/city", None),
+        ("https://ipapi.co/city/", None),
+        ("https://ipwho.is/", "city"),
+        ("http://ip-api.com/json/?fields=status,city", "city"),
+    )
+
+    # IPv4 curl, kullanıcının sisteminde WAN sorgusuyla aynı güvenilir yolu kullanır.
+    for url, json_key in sources:
         try:
-            value = fetch_text(url)
-            if value and "error" not in value.lower():
+            result = subprocess.run(
+                ["curl", "-4", "-fsS", "--max-time", "3", url],
+                capture_output=True, text=True, timeout=4, check=False,
+            )
+            if result.returncode != 0:
+                continue
+            value = result.stdout.strip()
+            if json_key:
+                value = str(json.loads(value).get(json_key, "")).strip()
+            if value and "error" not in value.lower() and len(value) < 100:
+                return value.splitlines()[0]
+        except (OSError, ValueError, json.JSONDecodeError, subprocess.SubprocessError):
+            continue
+
+    for url, json_key in sources:
+        try:
+            value = fetch_text(url, timeout=2.0)
+            if json_key:
+                value = str(json.loads(value).get(json_key, "")).strip()
+            if value and "error" not in value.lower() and len(value) < 100:
                 return value.splitlines()[0]
         except Exception:
             continue
