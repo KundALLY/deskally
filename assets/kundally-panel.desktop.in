@@ -2,7 +2,7 @@
 Type=Application
 Name=KundALLY Panel
 Comment=Sürüklenebilir sistem ve ağ bilgi paneli
-Exec=@HOME@/.local/bin/kundally-panelctl start
+Exec=@HOME@/.local/bin/kundally-panel start
 Icon=kundally-panel
 Terminal=false
 Categories=System;Monitor;

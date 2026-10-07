@@ -1,5 +1,12 @@
 # Değişiklik günlüğü
 
+## 0.5.0 — 2026-10-08
+
+- Bütün terminal işlemleri tek `kundally-panel` komutu altında toplandı.
+- Başlatma, kapatma, yenileme, durum, günlük ve renk komutları standartlaştırıldı.
+- Eski `restart-panel`, `kundally-panelctl` ve `panel-mavi` türü komutlar kaldırıldı.
+- Uygulamanın iç çalıştırıcısı kullanıcı komutlarından ayrıldı.
+
 ## 0.4.1 — 2026-10-08
 
 - Ağ ve sistem satırlarının eski pencere yüksekliği tarafından kesilmesi düzeltildi.

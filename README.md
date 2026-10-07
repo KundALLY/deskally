@@ -50,28 +50,29 @@ Kurulum yönetici yetkisi istemez. Dosyalar kullanıcının `~/.local` dizinine 
 - **Taşı:** Panelin herhangi bir yerinde sol tuşa basılı tutup sürükle.
 - **Menü:** Panele sağ tıkla.
 - **Ayarlar:** Sağ üstteki **⚙** düğmesine bas veya sağ tık → **Ayarlar**. Buradan kronometre, panel adı, renk, genişlik, şehir ve ağ satırları değiştirilebilir.
-- **Başlat:** `kundally-panelctl start`
-- **Kapat:** `kundally-panelctl stop`
-- **Yeniden başlat:** `kundally-panelctl restart`
-- **Günlük:** `kundally-panelctl logs`
+- **Başlat:** `kundally-panel start`
+- **Kapat:** `kundally-panel stop`
+- **Yeniden başlat:** `kundally-panel restart`
+- **Durum:** `kundally-panel status`
+- **Günlük:** `kundally-panel logs`
 
 ### Terminalden renk değiştirme
 
 Tema ve yerleşim korunur; yalnızca panelin vurgu rengi değişir:
 
 ```bash
-panel-turkuaz
-panel-mavi
-panel-kirmizi
-panel-yesil
-panel-mor
-panel-altin
+kundally-panel color turkuaz
+kundally-panel color mavi
+kundally-panel color kirmizi
+kundally-panel color yesil
+kundally-panel color mor
+kundally-panel color altin
 ```
 
 İstenen özel bir renk de kullanılabilir:
 
 ```bash
-panel-renk '#ff8800'
+kundally-panel color '#ff8800'
 ```
 
 Ayarlar `~/.config/kundally-panel/config.json`, çalışma durumu ise `~/.local/state/kundally-panel` altında saklanır.

@@ -1,0 +1,110 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+app_root="${KUNDALLY_PANEL_HOME:-$HOME/.local/share/kundally-panel}"
+state_dir="${XDG_STATE_HOME:-$HOME/.local/state}/kundally-panel"
+pid_file="$state_dir/panel.pid"
+log_file="$state_dir/panel.log"
+runner="${KUNDALLY_PANEL_RUNNER:-$HOME/.local/libexec/kundally-panel-app}"
+
+usage() {
+  cat <<'EOF'
+Kullanım: kundally-panel KOMUT
+
+  start                 Paneli başlat
+  stop                  Paneli kapat
+  restart               Paneli yeniden başlat
+  status                Çalışma durumunu göster
+  logs                  Son günlük kayıtlarını göster
+  color RENK            Rengi değiştir (mavi, kirmizi, yesil, mor, altin, turkuaz)
+  version               Sürümü göster
+  help                  Bu yardımı göster
+
+Örnek: kundally-panel color mavi
+EOF
+}
+
+is_running() {
+  [[ -s "$pid_file" ]] || return 1
+  local pid
+  pid="$(cat "$pid_file")"
+  [[ "$pid" =~ ^[0-9]+$ ]] && kill -0 "$pid" 2>/dev/null
+}
+
+start_panel() {
+  mkdir -p "$state_dir"
+  if is_running; then
+    echo "KundALLY Panel zaten çalışıyor."
+    return 0
+  fi
+  rm -f "$pid_file"
+  nohup "$runner" </dev/null >>"$log_file" 2>&1 &
+  for _ in {1..40}; do
+    if is_running; then
+      echo "KundALLY Panel başlatıldı."
+      return 0
+    fi
+    sleep 0.1
+  done
+  echo "Panel başlatılamadı. Günlük: $log_file" >&2
+  return 1
+}
+
+stop_panel() {
+  if is_running; then
+    local pid
+    pid="$(cat "$pid_file")"
+    kill "$pid" 2>/dev/null || true
+    for _ in {1..40}; do
+      kill -0 "$pid" 2>/dev/null || break
+      sleep 0.1
+    done
+    if kill -0 "$pid" 2>/dev/null; then
+      kill -KILL "$pid" 2>/dev/null || true
+      sleep 0.2
+    fi
+  fi
+  rm -f "$pid_file"
+  echo "KundALLY Panel kapatıldı."
+}
+
+show_status() {
+  if is_running; then
+    echo "KundALLY Panel çalışıyor (PID $(cat "$pid_file"))."
+  else
+    echo "KundALLY Panel çalışmıyor."
+    return 1
+  fi
+}
+
+set_color() {
+  if [[ $# -ne 1 ]]; then
+    echo "Kullanım: kundally-panel color RENK" >&2
+    return 2
+  fi
+  PYTHONPATH="$app_root${PYTHONPATH:+:$PYTHONPATH}" \
+    python3 -m kundally_panel.theme "$1"
+  stop_panel >/dev/null
+  start_panel
+}
+
+case "${1:-help}" in
+  start|baslat) start_panel ;;
+  stop|durdur) stop_panel ;;
+  restart|yenile) stop_panel; start_panel ;;
+  status|durum) show_status ;;
+  logs|gunluk)
+    if [[ -f "$log_file" ]]; then
+      tail -n 100 "$log_file"
+    else
+      echo "Henüz günlük kaydı yok."
+    fi
+    ;;
+  color|renk) shift; set_color "$@" ;;
+  version|surum)
+    PYTHONPATH="$app_root${PYTHONPATH:+:$PYTHONPATH}" \
+      python3 -c 'from kundally_panel import __version__; print(__version__)'
+    ;;
+  help|-h|--help|yardim) usage ;;
+  *) echo "Bilinmeyen komut: $1" >&2; usage >&2; exit 2 ;;
+esac

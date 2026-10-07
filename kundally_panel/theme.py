@@ -40,7 +40,7 @@ def set_accent(value: str, path: Path = CONFIG_FILE) -> str:
 def main(arguments: list[str] | None = None) -> int:
     arguments = list(sys.argv[1:] if arguments is None else arguments)
     if len(arguments) != 1:
-        print("Kullanım: kundally-panel-theme RENK", file=sys.stderr)
+        print("Kullanım: kundally-panel color RENK", file=sys.stderr)
         print("Renkler: " + ", ".join(PALETTE), file=sys.stderr)
         return 2
     try:
