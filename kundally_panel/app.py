@@ -218,7 +218,8 @@ class KundallyPanel(Gtk.Window):
         self.alive = True
 
         self.set_decorated(False)
-        self.set_resizable(False)
+        # İçerik satırları açılıp kapandığında pencerenin doğal boyuta geçebilmesi gerekir.
+        self.set_resizable(True)
         self.set_keep_above(self.config["always_on_top"])
         self.set_skip_taskbar_hint(True)
         self.set_skip_pager_hint(True)
@@ -319,7 +320,6 @@ class KundallyPanel(Gtk.Window):
         self.labels["date"] = self.make_label("…", "date", 0.0)
         self.hud.pack_start(self.labels["date"], False, False, 0)
         self.labels["countdown"] = self.make_label("…", "countdown", 0.5)
-        self.labels["countdown"].set_no_show_all(True)
         self.hud.pack_start(self.labels["countdown"], False, False, 0)
 
         self.add_line()
@@ -351,8 +351,6 @@ class KundallyPanel(Gtk.Window):
         self.hud.pack_start(row, False, False, 0)
         self.labels[name] = value
         self.rows[name] = row
-        if name in ("wan", "local_ip", "city"):
-            row.set_no_show_all(True)
 
     def build_menu(self) -> Gtk.Menu:
         menu = Gtk.Menu()
@@ -443,6 +441,17 @@ class KundallyPanel(Gtk.Window):
         self.rows["wan"].set_visible(self.config["show_public_ip"])
         self.rows["local_ip"].set_visible(self.config["show_local_ip"])
         self.rows["city"].set_visible(self.config["show_location"])
+        self.hud.queue_resize()
+        self.queue_resize()
+        GLib.idle_add(self.resize_to_content)
+
+    def resize_to_content(self) -> bool:
+        """Resize the window after rows are shown or hidden."""
+        _minimum, natural = self.hud.get_preferred_size()
+        width = max(self.config["panel_width"], natural.width)
+        height = max(1, natural.height)
+        self.resize(width, height)
+        return False
 
     def show_about(self, *_args) -> None:
         dialog = Gtk.AboutDialog(transient_for=self, modal=True)
@@ -455,16 +464,18 @@ class KundallyPanel(Gtk.Window):
         dialog.destroy()
 
     def place_initially(self) -> bool:
+        screen = self.get_screen()
+        monitor = screen.get_primary_monitor()
+        if monitor < 0:
+            monitor = 0
+        area = screen.get_monitor_workarea(monitor)
+        width, height = self.get_size()
         saved = load_position()
         if saved:
-            self.move(*saved)
+            x = max(area.x, min(saved[0], area.x + area.width - width))
+            y = max(area.y, min(saved[1], area.y + area.height - height))
+            self.move(x, y)
         else:
-            screen = self.get_screen()
-            monitor = screen.get_primary_monitor()
-            if monitor < 0:
-                monitor = 0
-            area = screen.get_monitor_workarea(monitor)
-            width, height = self.get_size()
             self.move(area.x + area.width - width - 12,
                       area.y + area.height - height - 12)
         self.position_ready = True
@@ -512,7 +523,8 @@ def main() -> int:
     signal.signal(signal.SIGTERM, lambda *_: GLib.idle_add(Gtk.main_quit))
     panel = KundallyPanel()
     panel.show_all()
-    GLib.idle_add(panel.place_initially)
+    panel.update_visibility()
+    GLib.timeout_add(50, panel.place_initially)
     Gtk.main()
     lock_handle.close()
     return 0

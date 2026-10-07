@@ -1,5 +1,12 @@
 # Değişiklik günlüğü
 
+## 0.4.1 — 2026-10-08
+
+- Ağ ve sistem satırlarının eski pencere yüksekliği tarafından kesilmesi düzeltildi.
+- Panel, açık ayarlara göre içeriğinin doğal yüksekliğine otomatik uzuyor.
+- Satırlar açılıp kapatıldığında pencere boyutu anında yeniden hesaplanıyor.
+- Kayıtlı konum ekran dışına taşıyorsa görünür alana geri alınıyor.
+
 ## 0.4.0 — 2026-10-08
 
 - WAN IP, yerel IP ve şehir görünürlüğü için ayrı ayarlar eklendi.
