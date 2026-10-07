@@ -28,6 +28,28 @@ exec python3 -m kundally_panel "\$@"
 EOF
 chmod 755 "$bin_dir/kundally-panel"
 
+cat >"$bin_dir/kundally-panel-theme" <<EOF
+#!/usr/bin/env bash
+export PYTHONPATH="$app_dir\${PYTHONPATH:+:\$PYTHONPATH}"
+python3 -m kundally_panel.theme "\$@" || exit \$?
+exec "$bin_dir/kundally-panelctl" restart
+EOF
+chmod 755 "$bin_dir/kundally-panel-theme"
+
+for preset in turkuaz mavi kirmizi yesil mor altin; do
+  cat >"$bin_dir/panel-$preset" <<EOF
+#!/usr/bin/env bash
+exec "$bin_dir/kundally-panel-theme" "$preset"
+EOF
+  chmod 755 "$bin_dir/panel-$preset"
+done
+
+cat >"$bin_dir/panel-renk" <<EOF
+#!/usr/bin/env bash
+exec "$bin_dir/kundally-panel-theme" "\$@"
+EOF
+chmod 755 "$bin_dir/panel-renk"
+
 sed "s|@HOME@|$HOME|g" "$project_dir/assets/kundally-panel.desktop.in" \
   >"$applications_dir/kundally-panel.desktop"
 cp "$applications_dir/kundally-panel.desktop" "$autostart_dir/kundally-panel.desktop"

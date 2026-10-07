@@ -7,6 +7,7 @@ from unittest import mock
 
 from kundally_panel.collectors import countdown, cpu_percent, human_bytes, local_ip, memory_usage, public_ip, turkish_date
 from kundally_panel.config import DEFAULT_CONFIG, load_config, load_position, save_config, save_position
+from kundally_panel.theme import resolve_color, set_accent
 
 
 class CollectorTests(unittest.TestCase):
@@ -79,6 +80,18 @@ class ConfigTests(unittest.TestCase):
             path = Path(directory) / "position.json"
             save_position(12, 34, path)
             self.assertEqual(load_position(path), (12, 34))
+
+    def test_theme_preset_preserves_other_settings(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "config.json"
+            save_config({**DEFAULT_CONFIG, "title": "Benim Panelim"}, path)
+            self.assertEqual(set_accent("kırmızı", path), "#ff3b5c")
+            loaded = load_config(path)
+            self.assertEqual(loaded["title"], "Benim Panelim")
+            self.assertEqual(loaded["accent_color"], "#ff3b5c")
+
+    def test_custom_hex_color(self):
+        self.assertEqual(resolve_color("#12ABef"), "#12abef")
 
 
 if __name__ == "__main__":

@@ -15,6 +15,7 @@ KundALLY Panel, Linux masaüstü için küçük ve sürüklenebilir bir sistem b
 - Sağ tıkla açılan ayar menüsü
 - Takvim ve saat kutularıyla ayarlanabilen kronometre
 - Değiştirilebilir panel adı, görsel renk seçici ve genişlik
+- Terminalden tek komutla değiştirilebilen hazır renkler
 - Oturum açılışında otomatik başlatma
 - Debian, Ubuntu, Linux Mint ve GTK 3 kullanan diğer X11 masaüstleri
 
@@ -51,6 +52,25 @@ Kurulum yönetici yetkisi istemez. Dosyalar kullanıcının `~/.local` dizinine 
 - **Kapat:** `kundally-panelctl stop`
 - **Yeniden başlat:** `kundally-panelctl restart`
 - **Günlük:** `kundally-panelctl logs`
+
+### Terminalden renk değiştirme
+
+Tema ve yerleşim korunur; yalnızca panelin vurgu rengi değişir:
+
+```bash
+panel-turkuaz
+panel-mavi
+panel-kirmizi
+panel-yesil
+panel-mor
+panel-altin
+```
+
+İstenen özel bir renk de kullanılabilir:
+
+```bash
+panel-renk '#ff8800'
+```
 
 Ayarlar `~/.config/kundally-panel/config.json`, çalışma durumu ise `~/.local/state/kundally-panel` altında saklanır.
 

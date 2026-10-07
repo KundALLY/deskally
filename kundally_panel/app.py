@@ -51,18 +51,18 @@ window { background-color: transparent; }
 #logo { color: ACCENT; font-size: 14px; font-weight: bold; }
 #clock { color: white; font-size: 11px; font-weight: bold; }
 #settings-button {
-  color: #b5f6ff;
+  color: ACCENT_LIGHT;
   background: transparent;
   border: 0;
   padding: 0 0 0 6px;
   font-size: 12px;
 }
 #settings-button:hover { color: ACCENT; }
-#date { color: #cfefff; font-size: 8px; font-weight: bold; margin-bottom: 1px; }
+#date { color: ACCENT_LIGHT; font-size: 8px; font-weight: bold; margin-bottom: 1px; }
 #countdown {
   color: white;
-  background-color: rgba(0, 229, 255, 0.10);
-  border: 1px solid rgba(0, 229, 255, 0.25);
+  background-color: ACCENT_BG;
+  border: 1px solid ACCENT_BORDER;
   border-radius: 5px;
   font-size: 9px;
   font-weight: bold;
@@ -72,12 +72,12 @@ window { background-color: transparent; }
 #title { color: ACCENT; font-size: 9px; font-weight: bold; margin: 1px 0; }
 #line { background-color: ACCENT; min-height: 1px; margin: 1px 0; opacity: 0.5; }
 #info {
-  background-color: rgba(0, 220, 255, 0.06);
+  background-color: ACCENT_INFO;
   border-radius: 6px;
   padding: 2px 5px;
   margin: 1px;
 }
-#key { color: #b5f6ff; font-size: 9px; font-weight: bold; }
+#key { color: ACCENT_LIGHT; font-size: 9px; font-weight: bold; }
 #value { color: white; font-size: 9px; font-weight: bold; }
 """
 
@@ -262,8 +262,20 @@ class KundallyPanel(Gtk.Window):
         if not re.fullmatch(r"#[0-9a-fA-F]{6}", accent):
             accent = "#00e5ff"
             self.config["accent_color"] = accent
+        red, green, blue = (int(accent[index:index + 2], 16) for index in (1, 3, 5))
+        light = "#{:02x}{:02x}{:02x}".format(
+            round(red + (255 - red) * 0.72),
+            round(green + (255 - green) * 0.72),
+            round(blue + (255 - blue) * 0.72),
+        )
+        css = BASE_CSS
+        css = css.replace("ACCENT_BG", f"rgba({red}, {green}, {blue}, 0.10)")
+        css = css.replace("ACCENT_BORDER", f"rgba({red}, {green}, {blue}, 0.25)")
+        css = css.replace("ACCENT_INFO", f"rgba({red}, {green}, {blue}, 0.06)")
+        css = css.replace("ACCENT_LIGHT", light)
+        css = css.replace("ACCENT", accent)
         provider = Gtk.CssProvider()
-        provider.load_from_data(BASE_CSS.replace("ACCENT", accent).encode())
+        provider.load_from_data(css.encode())
         Gtk.StyleContext.add_provider_for_screen(
             self.get_screen(), provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
         )

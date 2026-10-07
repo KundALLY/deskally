@@ -1,5 +1,12 @@
 # Değişiklik günlüğü
 
+## 0.3.0 — 2026-10-08
+
+- Terminalden kullanılabilen altı renk hazır ayarı eklendi.
+- Özel renkler için `panel-renk '#RRGGBB'` komutu eklendi.
+- Renk değişiminde panelin bütün vurgu tonlarının birlikte değişmesi sağlandı.
+- Renk değiştirilirken diğer kullanıcı ayarları korunuyor.
+
 ## 0.2.3 — 2026-10-08
 
 - Ağ arayüzünün altında ayrı bir yerel `IP` satırı eklendi.
