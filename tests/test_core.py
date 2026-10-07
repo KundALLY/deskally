@@ -3,8 +3,9 @@ import tempfile
 import unittest
 from datetime import datetime
 from pathlib import Path
+from unittest import mock
 
-from kundally_panel.collectors import countdown, cpu_percent, human_bytes, memory_usage, turkish_date
+from kundally_panel.collectors import countdown, cpu_percent, human_bytes, memory_usage, public_ip, turkish_date
 from kundally_panel.config import DEFAULT_CONFIG, load_config, load_position, save_config, save_position
 
 
@@ -27,6 +28,13 @@ class CollectorTests(unittest.TestCase):
 
     def test_human_bytes(self):
         self.assertEqual(human_bytes(1024 ** 3), "1GiB")
+
+    def test_public_ip_uses_fallback_source(self):
+        with mock.patch(
+            "kundally_panel.collectors.fetch_text",
+            side_effect=[OSError("offline"), "198.51.100.20"],
+        ):
+            self.assertEqual(public_ip(), "198.51.100.20")
 
 
 class ConfigTests(unittest.TestCase):

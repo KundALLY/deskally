@@ -13,7 +13,8 @@ KundALLY Panel, Linux masaüstü için küçük ve sürüklenebilir bir sistem b
 - Ağ arayüzü, genel IP ve şehir bilgisi
 - Türkçe tarih, saat ve ayarlanabilir geri sayım
 - Sağ tıkla açılan ayar menüsü
-- Değiştirilebilir başlık, vurgu rengi ve genişlik
+- Takvim ve saat kutularıyla ayarlanabilen kronometre
+- Değiştirilebilir panel adı, görsel renk seçici ve genişlik
 - Oturum açılışında otomatik başlatma
 - Debian, Ubuntu, Linux Mint ve GTK 3 kullanan diğer X11 masaüstleri
 
@@ -45,7 +46,7 @@ Kurulum yönetici yetkisi istemez. Dosyalar kullanıcının `~/.local` dizinine 
 
 - **Taşı:** Panelin herhangi bir yerinde sol tuşa basılı tutup sürükle.
 - **Menü:** Panele sağ tıkla.
-- **Ayarlar:** Sağ tık → **Ayarlar**.
+- **Ayarlar:** Sağ üstteki **⚙** düğmesine bas veya sağ tık → **Ayarlar**. Buradan kronometre günü ve saati, panel adı, rengi ve genişliği değiştirilebilir.
 - **Başlat:** `kundally-panelctl start`
 - **Kapat:** `kundally-panelctl stop`
 - **Yeniden başlat:** `kundally-panelctl restart`

@@ -7,6 +7,7 @@ import socket
 import subprocess
 import urllib.request
 from datetime import datetime
+from ipaddress import ip_address
 from pathlib import Path
 
 
@@ -109,27 +110,44 @@ def gpu_temperature() -> str:
 
 
 def fetch_text(url: str, timeout: float = 5.0) -> str:
-    request = urllib.request.Request(url, headers={"User-Agent": "KundALLY-Panel/0.1"})
+    request = urllib.request.Request(url, headers={"User-Agent": "KundALLY-Panel/0.2"})
     with urllib.request.urlopen(request, timeout=timeout) as response:
         return response.read(256).decode("utf-8", "replace").strip()
 
 
 def public_ip() -> str:
-    try:
-        trace = fetch_text("https://www.cloudflare.com/cdn-cgi/trace")
-        for line in trace.splitlines():
-            if line.startswith("ip="):
-                return line.removeprefix("ip=").strip() or "—"
-    except Exception:
-        pass
+    sources = (
+        ("https://www.cloudflare.com/cdn-cgi/trace", True),
+        ("https://api.ipify.org", False),
+        ("https://ident.me", False),
+        ("https://ifconfig.me/ip", False),
+    )
+    for url, is_trace in sources:
+        try:
+            response = fetch_text(url)
+            candidate = response
+            if is_trace:
+                candidate = next(
+                    (line.removeprefix("ip=").strip() for line in response.splitlines()
+                     if line.startswith("ip=")),
+                    "",
+                )
+            ip_address(candidate)
+            return candidate
+        except Exception:
+            continue
     return "—"
 
 
 def city() -> str:
-    try:
-        return fetch_text("https://ipinfo.io/city") or "—"
-    except Exception:
-        return "—"
+    for url in ("https://ipinfo.io/city", "https://ipapi.co/city/"):
+        try:
+            value = fetch_text(url)
+            if value and "error" not in value.lower():
+                return value.splitlines()[0]
+        except Exception:
+            continue
+    return "—"
 
 
 def local_hostname() -> str:

@@ -13,6 +13,7 @@ from datetime import datetime
 import gi
 
 gi.require_version("Gtk", "3.0")
+gi.require_version("Gdk", "3.0")
 from gi.repository import Gdk, GLib, Gtk, Pango
 
 from . import __version__
@@ -48,6 +49,14 @@ window { background-color: transparent; }
 #head { margin-bottom: 1px; }
 #logo { color: ACCENT; font-size: 14px; font-weight: bold; }
 #clock { color: white; font-size: 11px; font-weight: bold; }
+#settings-button {
+  color: #b5f6ff;
+  background: transparent;
+  border: 0;
+  padding: 0 0 0 6px;
+  font-size: 12px;
+}
+#settings-button:hover { color: ACCENT; }
 #date { color: #cfefff; font-size: 8px; font-weight: bold; margin-bottom: 1px; }
 #countdown {
   color: white;
@@ -89,54 +98,95 @@ class SettingsDialog(Gtk.Dialog):
         self.title_entry = Gtk.Entry(text=config["title"])
         grid.attach(self.title_entry, 1, 0, 1, 1)
 
-        grid.attach(Gtk.Label(label="Geri sayım tarihi", xalign=0), 0, 1, 1, 1)
-        self.target_entry = Gtk.Entry(text=config["countdown_target"])
-        self.target_entry.set_placeholder_text("2027-08-15T00:00:00")
-        grid.attach(self.target_entry, 1, 1, 1, 1)
+        grid.attach(Gtk.Label(label="Kronometre günü", xalign=0, yalign=0), 0, 1, 1, 1)
+        self.calendar = Gtk.Calendar()
+        try:
+            target = datetime.fromisoformat(config["countdown_target"])
+        except ValueError:
+            target = datetime.now()
+        self.calendar.select_month(target.month - 1, target.year)
+        self.calendar.select_day(target.day)
+        grid.attach(self.calendar, 1, 1, 1, 1)
 
-        grid.attach(Gtk.Label(label="Vurgu rengi", xalign=0), 0, 2, 1, 1)
-        self.accent_entry = Gtk.Entry(text=config["accent_color"])
-        self.accent_entry.set_placeholder_text("#00e5ff")
-        grid.attach(self.accent_entry, 1, 2, 1, 1)
+        grid.attach(Gtk.Label(label="Kronometre saati", xalign=0), 0, 2, 1, 1)
+        time_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=5)
+        self.hour_spin = Gtk.SpinButton.new_with_range(0, 23, 1)
+        self.minute_spin = Gtk.SpinButton.new_with_range(0, 59, 1)
+        self.second_spin = Gtk.SpinButton.new_with_range(0, 59, 1)
+        self.hour_spin.set_value(target.hour)
+        self.minute_spin.set_value(target.minute)
+        self.second_spin.set_value(target.second)
+        for spin in (self.hour_spin, self.minute_spin, self.second_spin):
+            spin.set_numeric(True)
+            spin.set_width_chars(2)
+        time_box.pack_start(self.hour_spin, False, False, 0)
+        time_box.pack_start(Gtk.Label(label=":"), False, False, 0)
+        time_box.pack_start(self.minute_spin, False, False, 0)
+        time_box.pack_start(Gtk.Label(label=":"), False, False, 0)
+        time_box.pack_start(self.second_spin, False, False, 0)
+        grid.attach(time_box, 1, 2, 1, 1)
 
-        grid.attach(Gtk.Label(label="Panel genişliği", xalign=0), 0, 3, 1, 1)
+        grid.attach(Gtk.Label(label="Panel rengi", xalign=0), 0, 3, 1, 1)
+        self.color_button = Gtk.ColorButton()
+        color = Gdk.RGBA()
+        color.parse(config["accent_color"])
+        self.color_button.set_rgba(color)
+        self.color_button.set_title("KundALLY Panel rengini seç")
+        grid.attach(self.color_button, 1, 3, 1, 1)
+
+        grid.attach(Gtk.Label(label="Panel genişliği", xalign=0), 0, 4, 1, 1)
         self.width_spin = Gtk.SpinButton.new_with_range(160, 420, 5)
         self.width_spin.set_value(config["panel_width"])
-        grid.attach(self.width_spin, 1, 3, 1, 1)
+        grid.attach(self.width_spin, 1, 4, 1, 1)
 
         self.countdown_check = Gtk.CheckButton(label="Geri sayımı göster")
         self.countdown_check.set_active(config["show_countdown"])
-        grid.attach(self.countdown_check, 0, 4, 2, 1)
+        grid.attach(self.countdown_check, 0, 5, 2, 1)
 
         self.ip_check = Gtk.CheckButton(label="Genel IP adresini göster")
         self.ip_check.set_active(config["show_public_ip"])
-        grid.attach(self.ip_check, 0, 5, 2, 1)
+        grid.attach(self.ip_check, 0, 6, 2, 1)
 
         self.location_check = Gtk.CheckButton(label="Şehir bilgisini göster")
         self.location_check.set_active(config["show_location"])
-        grid.attach(self.location_check, 0, 6, 2, 1)
+        grid.attach(self.location_check, 0, 7, 2, 1)
 
         self.top_check = Gtk.CheckButton(label="Diğer pencerelerin üstünde tut")
         self.top_check.set_active(config["always_on_top"])
-        grid.attach(self.top_check, 0, 7, 2, 1)
+        grid.attach(self.top_check, 0, 8, 2, 1)
 
         note = Gtk.Label(
             label="İpucu: Paneli sol tuşla tutup sürükle. Menüyü sağ tıkla aç.",
             xalign=0,
         )
         note.set_line_wrap(True)
-        grid.attach(note, 0, 8, 2, 1)
+        grid.attach(note, 0, 9, 2, 1)
         self.show_all()
 
     def values(self) -> dict:
+        year, zero_based_month, day = self.calendar.get_date()
+        target = datetime(
+            year,
+            zero_based_month + 1,
+            day,
+            self.hour_spin.get_value_as_int(),
+            self.minute_spin.get_value_as_int(),
+            self.second_spin.get_value_as_int(),
+        )
+        color = self.color_button.get_rgba()
+        accent = "#{:02x}{:02x}{:02x}".format(
+            round(color.red * 255),
+            round(color.green * 255),
+            round(color.blue * 255),
+        )
         return {
             "title": self.title_entry.get_text().strip() or "KundALLY",
-            "countdown_target": self.target_entry.get_text().strip(),
+            "countdown_target": target.isoformat(),
             "show_countdown": self.countdown_check.get_active(),
             "show_public_ip": self.ip_check.get_active(),
             "show_location": self.location_check.get_active(),
             "always_on_top": self.top_check.get_active(),
-            "accent_color": self.accent_entry.get_text().strip(),
+            "accent_color": accent,
             "panel_width": self.width_spin.get_value_as_int(),
         }
 
@@ -227,7 +277,13 @@ class KundallyPanel(Gtk.Window):
             f"◉ {self.config['title']}", "logo", 0.0
         )
         self.labels["clock"] = self.make_label("--:--", "clock", 1.0)
+        settings_button = Gtk.Button(label="⚙")
+        settings_button.set_name("settings-button")
+        settings_button.set_relief(Gtk.ReliefStyle.NONE)
+        settings_button.set_tooltip_text("Panel ayarları")
+        settings_button.connect("clicked", self.open_settings)
         header.pack_start(self.labels["logo"], False, False, 0)
+        header.pack_end(settings_button, False, False, 0)
         header.pack_end(self.labels["clock"], False, False, 0)
         self.hud.pack_start(header, False, False, 0)
 
