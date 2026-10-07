@@ -121,7 +121,7 @@ def gpu_temperature() -> str:
 
 
 def fetch_text(url: str, timeout: float = 5.0) -> str:
-    request = urllib.request.Request(url, headers={"User-Agent": "KundALLY-Panel/0.2"})
+    request = urllib.request.Request(url, headers={"User-Agent": "DeskALLY/0.7"})
     with urllib.request.urlopen(request, timeout=timeout) as response:
         return response.read(256).decode("utf-8", "replace").strip()
 

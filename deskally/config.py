@@ -1,4 +1,4 @@
-"""Configuration and state paths for KundALLY Panel."""
+"""Configuration and state paths for DeskALLY."""
 
 from __future__ import annotations
 
@@ -9,10 +9,11 @@ from pathlib import Path
 from typing import Any
 
 
-APP_ID = "kundally-panel"
+APP_ID = "deskally"
+LEGACY_APP_ID = "kundally-panel"
 
 DEFAULT_CONFIG: dict[str, Any] = {
-    "title": "KundALLY",
+    "title": "DeskALLY",
     "language": "tr",
     "countdown_target": "2027-08-15T00:00:00",
     "show_countdown": True,
@@ -32,10 +33,14 @@ def xdg_path(variable: str, fallback: str) -> Path:
 
 CONFIG_DIR = xdg_path("XDG_CONFIG_HOME", ".config") / APP_ID
 STATE_DIR = xdg_path("XDG_STATE_HOME", ".local/state") / APP_ID
+LEGACY_CONFIG_DIR = xdg_path("XDG_CONFIG_HOME", ".config") / LEGACY_APP_ID
+LEGACY_STATE_DIR = xdg_path("XDG_STATE_HOME", ".local/state") / LEGACY_APP_ID
 CONFIG_FILE = CONFIG_DIR / "config.json"
 POSITION_FILE = STATE_DIR / "position.json"
 PID_FILE = STATE_DIR / "panel.pid"
 LOCK_FILE = STATE_DIR / "panel.lock"
+LEGACY_CONFIG_FILE = LEGACY_CONFIG_DIR / "config.json"
+LEGACY_POSITION_FILE = LEGACY_STATE_DIR / "position.json"
 
 
 def normalize_config(candidate: dict[str, Any]) -> dict[str, Any]:
@@ -60,9 +65,17 @@ def normalize_config(candidate: dict[str, Any]) -> dict[str, Any]:
 
 
 def load_config(path: Path = CONFIG_FILE) -> dict[str, Any]:
+    source = path
+    migrated = False
+    if path == CONFIG_FILE and not path.exists() and LEGACY_CONFIG_FILE.exists():
+        source = LEGACY_CONFIG_FILE
+        migrated = True
     try:
-        raw = json.loads(path.read_text(encoding="utf-8"))
-        return normalize_config(raw if isinstance(raw, dict) else {})
+        raw = json.loads(source.read_text(encoding="utf-8"))
+        config = normalize_config(raw if isinstance(raw, dict) else {})
+        if migrated and config["title"] == "KundALLY":
+            config["title"] = "DeskALLY"
+        return config
     except (OSError, json.JSONDecodeError):
         return deepcopy(DEFAULT_CONFIG)
 
@@ -78,8 +91,11 @@ def save_config(config: dict[str, Any], path: Path = CONFIG_FILE) -> None:
 
 
 def load_position(path: Path = POSITION_FILE) -> tuple[int, int] | None:
+    source = path
+    if path == POSITION_FILE and not path.exists() and LEGACY_POSITION_FILE.exists():
+        source = LEGACY_POSITION_FILE
     try:
-        raw = json.loads(path.read_text(encoding="utf-8"))
+        raw = json.loads(source.read_text(encoding="utf-8"))
         return int(raw["x"]), int(raw["y"])
     except (OSError, ValueError, TypeError, KeyError, json.JSONDecodeError):
         return None

@@ -12,7 +12,7 @@
     <rect width="246" height="405" rx="22" fill="#050a12" fill-opacity=".97" stroke="#00e5ff" stroke-width="2"/>
     <g transform="translate(15 17)">
       <circle cx="8" cy="9" r="6" fill="none" stroke="#00e5ff" stroke-width="3"/>
-      <text x="22" y="14" fill="#00e5ff" font-weight="700" font-size="17">KundALLY</text>
+      <text x="22" y="14" fill="#00e5ff" font-weight="700" font-size="17">DeskALLY</text>
       <text x="213" y="14" fill="#fff" font-weight="700" font-size="14" text-anchor="end">01:27</text>
       <text y="38" fill="#cfefff" font-weight="700" font-size="10">Perşembe 8 Ekim 2026</text>
       <rect y="49" width="216" height="27" rx="6" fill="#00e5ff" fill-opacity=".10" stroke="#00e5ff" stroke-opacity=".28"/>
@@ -40,7 +40,7 @@
     </g>
   </g>
   <g transform="translate(65 120)" font-family="DejaVu Sans, sans-serif">
-    <text fill="#00e5ff" font-size="20" font-weight="700">KundALLY PANEL</text>
+    <text fill="#00e5ff" font-size="20" font-weight="700">DeskALLY PANEL</text>
     <text y="48" fill="#fff" font-size="38" font-weight="700">Sistemin,</text>
     <text y="94" fill="#fff" font-size="38" font-weight="700">bir bakış uzağında.</text>
     <text y="143" fill="#b8c8dc" font-size="17">Sürükle • Özelleştir • Takip et</text>

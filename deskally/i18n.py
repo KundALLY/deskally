@@ -7,7 +7,7 @@ SUPPORTED_LANGUAGES = ("tr", "en")
 
 STRINGS = {
     "tr": {
-        "settings_title": "KundALLY Panel Ayarları",
+        "settings_title": "DeskALLY Ayarları",
         "cancel": "İptal",
         "save": "Kaydet",
         "panel_name": "Panel adı",
@@ -15,7 +15,7 @@ STRINGS = {
         "countdown_day": "Kronometre günü",
         "countdown_time": "Kronometre saati",
         "panel_color": "Panel rengi",
-        "color_picker_title": "KundALLY Panel rengini seç",
+        "color_picker_title": "DeskALLY rengini seç",
         "panel_width": "Panel genişliği",
         "city": "Şehir",
         "city_placeholder": "Boş bırakırsan otomatik bulunur",
@@ -38,7 +38,7 @@ STRINGS = {
         "about": "Linux masaüstü için sürüklenebilir sistem ve ağ paneli.",
     },
     "en": {
-        "settings_title": "KundALLY Panel Settings",
+        "settings_title": "DeskALLY Settings",
         "cancel": "Cancel",
         "save": "Save",
         "panel_name": "Panel name",
@@ -46,7 +46,7 @@ STRINGS = {
         "countdown_day": "Countdown date",
         "countdown_time": "Countdown time",
         "panel_color": "Panel color",
-        "color_picker_title": "Choose the KundALLY Panel color",
+        "color_picker_title": "Choose the DeskALLY color",
         "panel_width": "Panel width",
         "city": "City",
         "city_placeholder": "Leave empty for automatic detection",

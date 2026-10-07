@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=DeskALLY
+Comment=Draggable system and network information panel
+Exec=@HOME@/.local/bin/deskally start
+Icon=deskally
+Terminal=false
+Categories=System;Monitor;
+StartupNotify=false

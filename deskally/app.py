@@ -201,7 +201,7 @@ class SettingsDialog(Gtk.Dialog):
             round(color.blue * 255),
         )
         return {
-            "title": self.title_entry.get_text().strip() or "KundALLY",
+            "title": self.title_entry.get_text().strip() or "DeskALLY",
             "language": self.language_combo.get_active_id() or "tr",
             "countdown_target": target.isoformat(),
             "show_countdown": self.countdown_check.get_active(),
@@ -217,7 +217,7 @@ class SettingsDialog(Gtk.Dialog):
 
 class KundallyPanel(Gtk.Window):
     def __init__(self) -> None:
-        super().__init__(title="KundALLY Panel")
+        super().__init__(title="DeskALLY")
         self.config = load_config()
         self.collector = SystemCollector()
         self.executor = ThreadPoolExecutor(max_workers=4, thread_name_prefix="kundally")
@@ -433,7 +433,7 @@ class KundallyPanel(Gtk.Window):
         updated = text(self.config["language"], "updated")
         self.labels[name].set_tooltip_text(f"{updated}: {datetime.now():%H:%M:%S}")
         if name in ("wan", "local_ip", "city"):
-            print(f"KundALLY {name} sonucu: {value}", file=sys.stderr, flush=True)
+            print(f"DeskALLY {name} sonucu: {value}", file=sys.stderr, flush=True)
         return False
 
     def refresh_all(self, *_args) -> None:
@@ -482,7 +482,7 @@ class KundallyPanel(Gtk.Window):
 
     def show_about(self, *_args) -> None:
         dialog = Gtk.AboutDialog(transient_for=self, modal=True)
-        dialog.set_program_name("KundALLY Panel")
+        dialog.set_program_name("DeskALLY")
         dialog.set_version(__version__)
         dialog.set_comments(text(self.config["language"], "about"))
         dialog.set_website("https://github.com/")
@@ -543,7 +543,7 @@ def main() -> int:
     try:
         fcntl.flock(lock_handle, fcntl.LOCK_EX | fcntl.LOCK_NB)
     except BlockingIOError:
-        print("KundALLY Panel zaten çalışıyor.", file=sys.stderr)
+        print("DeskALLY zaten çalışıyor.", file=sys.stderr)
         return 0
 
     PID_FILE.write_text(f"{os.getpid()}\n", encoding="utf-8")

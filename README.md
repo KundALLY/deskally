@@ -1,10 +1,10 @@
-# KundALLY Panel
+# DeskALLY
 
 [Türkçe](README.md) · [English](README.en.md)
 
-![KundALLY Panel önizlemesi](docs/preview.svg)
+![DeskALLY önizlemesi](docs/preview.svg)
 
-KundALLY Panel, Linux masaüstünde temel sistem ve ağ bilgilerini küçük bir pencerede gösteren açık kaynaklı bir GTK 3 uygulamasıdır. Amacı CPU, GPU, RAM, IP adresleri, şehir, tarih, saat ve kişisel geri sayımı masaüstünde tek bakışta erişilebilir tutmaktır.
+DeskALLY, Linux masaüstünde temel sistem ve ağ bilgilerini küçük bir pencerede gösteren açık kaynaklı bir GTK 3 uygulamasıdır. Amacı CPU, GPU, RAM, IP adresleri, şehir, tarih, saat ve kişisel geri sayımı masaüstünde tek bakışta erişilebilir tutmaktır.
 
 Panel başlık çubuğu kullanmaz. Fareyle doğrudan sürüklenir, son konumunu hatırlar ve görünmesini istemediğin satırları kapattığında boyunu otomatik ayarlar. Arayüz Türkçe ve İngilizce kullanılabilir.
 
@@ -19,7 +19,7 @@ Panel başlık çubuğu kullanmaz. Fareyle doğrudan sürüklenir, son konumunu 
 - Otomatik bulunamazsa şehri elle belirleme
 - Fareyle sürükleme, konumu hatırlama ve sağ tık menüsü
 - Oturum açılışında otomatik başlatma
-- Tek bir `kundally-panel` komutu altında yönetim
+- Tek bir `deskally` komutu altında yönetim
 - Kullanıcı dizinine kurulum; yönetici yetkisi gerektirmez
 
 ## Desteklenen sistemler
@@ -45,8 +45,8 @@ sudo apt install lm-sensors
 GitHub sayfasında **Code → Download ZIP** ile projeyi indirip arşivi çıkarabilir veya depoyu klonlayabilirsin. Depo yayımlanırken aşağıdaki örnek adresteki `KULLANICI_ADI` alanı gerçek GitHub kullanıcı adıyla değiştirilecektir:
 
 ```bash
-git clone https://github.com/KULLANICI_ADI/kundally-panel.git
-cd kundally-panel
+git clone https://github.com/KULLANICI_ADI/deskally.git
+cd deskally
 ./install.sh
 ```
 
@@ -71,14 +71,14 @@ Paneli hemen başlatmadan kurmak için:
 
 | Komut | Görevi |
 | --- | --- |
-| `kundally-panel start` | Paneli başlatır. Zaten çalışıyorsa ikinci kopya açmaz. |
-| `kundally-panel stop` | Çalışan paneli kapatır. |
-| `kundally-panel restart` | Paneli kapatıp güncel ayarlarla yeniden başlatır. |
-| `kundally-panel status` | Panelin çalışıp çalışmadığını ve PID değerini gösterir. |
-| `kundally-panel logs` | Son 100 günlük satırını gösterir. |
-| `kundally-panel color RENK` | Vurgu rengini değiştirip paneli yeniden başlatır. |
-| `kundally-panel version` | Kurulu sürüm numarasını gösterir. |
-| `kundally-panel help` | Tüm komutların kısa yardımını gösterir. |
+| `deskally start` | Paneli başlatır. Zaten çalışıyorsa ikinci kopya açmaz. |
+| `deskally stop` | Çalışan paneli kapatır. |
+| `deskally restart` | Paneli kapatıp güncel ayarlarla yeniden başlatır. |
+| `deskally status` | Panelin çalışıp çalışmadığını ve PID değerini gösterir. |
+| `deskally logs` | Son 100 günlük satırını gösterir. |
+| `deskally color RENK` | Vurgu rengini değiştirip paneli yeniden başlatır. |
+| `deskally version` | Kurulu sürüm numarasını gösterir. |
+| `deskally help` | Tüm komutların kısa yardımını gösterir. |
 
 Türkçe komut eş adları da bulunur: `baslat`, `durdur`, `yenile`, `durum`, `gunluk`, `renk`, `surum` ve `yardim`.
 
@@ -87,18 +87,18 @@ Türkçe komut eş adları da bulunur: `baslat`, `durdur`, `yenile`, `durum`, `g
 Hazır renkler Türkçe veya İngilizce adla kullanılabilir:
 
 ```bash
-kundally-panel color turkuaz
-kundally-panel color mavi
-kundally-panel color kirmizi
-kundally-panel color yesil
-kundally-panel color mor
-kundally-panel color altin
+deskally color turkuaz
+deskally color mavi
+deskally color kirmizi
+deskally color yesil
+deskally color mor
+deskally color altin
 ```
 
 İngilizce eşleri `cyan`, `blue`, `red`, `green`, `purple` ve `gold` şeklindedir. Özel bir renk için altı haneli HEX değeri kullan:
 
 ```bash
-kundally-panel color '#ff8800'
+deskally color '#ff8800'
 ```
 
 Renk komutu başlık, dil, sayaç ve görünürlük gibi diğer ayarları korur.
@@ -132,12 +132,12 @@ Renk komutu başlık, dil, sayaç ve görünürlük gibi diğer ayarları korur.
 
 | Konum | İçerik |
 | --- | --- |
-| `~/.local/share/kundally-panel/` | Kurulu uygulama dosyaları |
-| `~/.local/bin/kundally-panel` | Kullanıcı komutu |
-| `~/.local/share/applications/kundally-panel.desktop` | Uygulama menüsü kaydı |
-| `~/.config/autostart/kundally-panel.desktop` | Otomatik başlatma kaydı |
-| `~/.config/kundally-panel/config.json` | Kullanıcı ayarları |
-| `~/.local/state/kundally-panel/` | PID, konum ve günlük dosyaları |
+| `~/.local/share/deskally/` | Kurulu uygulama dosyaları |
+| `~/.local/bin/deskally` | Kullanıcı komutu |
+| `~/.local/share/applications/deskally.desktop` | Uygulama menüsü kaydı |
+| `~/.config/autostart/deskally.desktop` | Otomatik başlatma kaydı |
+| `~/.config/deskally/config.json` | Kullanıcı ayarları |
+| `~/.local/state/deskally/` | PID, konum ve günlük dosyaları |
 
 ## Gizlilik ve ağ kullanımı
 
@@ -150,18 +150,18 @@ Bu hizmetler isteği gönderen genel IP adresini doğal olarak görür. WAN IP v
 Panel açılmıyorsa önce durum ve günlükleri kontrol et:
 
 ```bash
-kundally-panel status
-kundally-panel logs
-kundally-panel restart
+deskally status
+deskally logs
+deskally restart
 ```
 
-`kundally-panel: command not found` hatasında `~/.local/bin` dizininin PATH içinde olduğundan emin ol veya şu tam yolu kullan:
+`deskally: command not found` hatasında `~/.local/bin` dizininin PATH içinde olduğundan emin ol veya şu tam yolu kullan:
 
 ```bash
-~/.local/bin/kundally-panel restart
+~/.local/bin/deskally restart
 ```
 
-Şehir görünmüyorsa internet bağlantısını kontrol et veya **Ayarlar → Şehir** alanına adı elle yaz. Sıcaklık `—` görünüyorsa `lm-sensors` kurup sistemin sensör desteğini denetle. Bir satır ayarlarda açık olduğu halde görünmüyorsa paneli `kundally-panel restart` ile yeniden başlat. Panel ekran dışında kaldıysa sağ tık menüsünden **Konumu sıfırla** seçeneğini kullan.
+Şehir görünmüyorsa internet bağlantısını kontrol et veya **Ayarlar → Şehir** alanına adı elle yaz. Sıcaklık `—` görünüyorsa `lm-sensors` kurup sistemin sensör desteğini denetle. Bir satır ayarlarda açık olduğu halde görünmüyorsa paneli `deskally restart` ile yeniden başlat. Panel ekran dışında kaldıysa sağ tık menüsünden **Konumu sıfırla** seçeneğini kullan.
 
 ## Güncelleme
 
@@ -184,7 +184,7 @@ Proje dizininde:
 Kaldırıcı uygulamayı, komutu, menü kaydını ve otomatik başlatmayı siler. Kişisel ayar dosyasını daha sonra yeniden kurabilmen için korur. Ayarları da silmek istersen ayrıca şunu çalıştır:
 
 ```bash
-rm -rf ~/.config/kundally-panel ~/.local/state/kundally-panel
+rm -rf ~/.config/deskally ~/.local/state/deskally
 ```
 
 ## Geliştirme
@@ -192,13 +192,13 @@ rm -rf ~/.config/kundally-panel ~/.local/state/kundally-panel
 Kaynak koddan çalıştırmak ve testleri yürütmek için:
 
 ```bash
-python3 -m kundally_panel
+python3 -m deskally
 python3 -m unittest discover -s tests -v
 ```
 
 Ana dizinler:
 
-- `kundally_panel/`: GTK arayüzü, veri toplayıcılar, yapılandırma, çeviriler ve tema kodu
+- `deskally/`: GTK arayüzü, veri toplayıcılar, yapılandırma, çeviriler ve tema kodu
 - `scripts/`: birleşik terminal komutu
 - `assets/`: uygulama simgesi ve `.desktop` şablonu
 - `tests/`: ağ kullanmadan çalışan temel birim testleri
@@ -208,4 +208,4 @@ Katkı süreci için [CONTRIBUTING.md](CONTRIBUTING.md) dosyasına bak.
 
 ## Lisans
 
-KundALLY Panel [MIT Lisansı](LICENSE) ile yayımlanır.
+DeskALLY [MIT Lisansı](LICENSE) ile yayımlanır.

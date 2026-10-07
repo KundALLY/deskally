@@ -1,10 +1,10 @@
-# KundALLY Panel
+# DeskALLY
 
 [Türkçe](README.md) · [English](README.en.md)
 
-![KundALLY Panel preview](docs/preview.svg)
+![DeskALLY preview](docs/preview.svg)
 
-KundALLY Panel is an open source GTK 3 application that displays essential system and network information in a compact Linux desktop window. It keeps CPU, GPU, RAM, IP addresses, city, date, time, and a personal countdown visible at a glance.
+DeskALLY is an open source GTK 3 application that displays essential system and network information in a compact Linux desktop window. It keeps CPU, GPU, RAM, IP addresses, city, date, time, and a personal countdown visible at a glance.
 
 The panel has no title bar. You can drag it directly with the mouse, it remembers its last position, and it resizes when optional rows are hidden. The interface is available in Turkish and English.
 
@@ -19,7 +19,7 @@ The panel has no title bar. You can drag it directly with the mouse, it remember
 - Manual city override when automatic detection is unavailable
 - Direct mouse dragging, saved position, and a right-click menu
 - Automatic start at login
-- Management through one `kundally-panel` command
+- Management through one `deskally` command
 - Per-user installation with no administrator access required
 
 ## Supported systems
@@ -45,8 +45,8 @@ sudo apt install lm-sensors
 Download and extract the project from **Code → Download ZIP** on GitHub, or clone the repository. When the repository is published, `KULLANICI_ADI` in this example will be replaced with the actual GitHub username:
 
 ```bash
-git clone https://github.com/KULLANICI_ADI/kundally-panel.git
-cd kundally-panel
+git clone https://github.com/KULLANICI_ADI/deskally.git
+cd deskally
 ./install.sh
 ```
 
@@ -71,14 +71,14 @@ To install without starting the panel immediately:
 
 | Command | Purpose |
 | --- | --- |
-| `kundally-panel start` | Starts the panel and avoids opening a duplicate instance. |
-| `kundally-panel stop` | Stops the running panel. |
-| `kundally-panel restart` | Stops and starts the panel with the latest settings. |
-| `kundally-panel status` | Shows whether the panel is running and prints its PID. |
-| `kundally-panel logs` | Prints the last 100 log lines. |
-| `kundally-panel color COLOR` | Changes the accent color and restarts the panel. |
-| `kundally-panel version` | Prints the installed version. |
-| `kundally-panel help` | Shows the short command reference. |
+| `deskally start` | Starts the panel and avoids opening a duplicate instance. |
+| `deskally stop` | Stops the running panel. |
+| `deskally restart` | Stops and starts the panel with the latest settings. |
+| `deskally status` | Shows whether the panel is running and prints its PID. |
+| `deskally logs` | Prints the last 100 log lines. |
+| `deskally color COLOR` | Changes the accent color and restarts the panel. |
+| `deskally version` | Prints the installed version. |
+| `deskally help` | Shows the short command reference. |
 
 Turkish command aliases are also available: `baslat`, `durdur`, `yenile`, `durum`, `gunluk`, `renk`, `surum`, and `yardim`.
 
@@ -87,18 +87,18 @@ Turkish command aliases are also available: `baslat`, `durdur`, `yenile`, `durum
 Preset colors accept English or Turkish names:
 
 ```bash
-kundally-panel color cyan
-kundally-panel color blue
-kundally-panel color red
-kundally-panel color green
-kundally-panel color purple
-kundally-panel color gold
+deskally color cyan
+deskally color blue
+deskally color red
+deskally color green
+deskally color purple
+deskally color gold
 ```
 
 Their Turkish equivalents are `turkuaz`, `mavi`, `kirmizi`, `yesil`, `mor`, and `altin`. Use a six-digit HEX value for a custom color:
 
 ```bash
-kundally-panel color '#ff8800'
+deskally color '#ff8800'
 ```
 
 The color command preserves the title, language, countdown, and visibility settings.
@@ -132,12 +132,12 @@ An em dash (`—`) means the value could not be read from the hardware or operat
 
 | Location | Contents |
 | --- | --- |
-| `~/.local/share/kundally-panel/` | Installed application files |
-| `~/.local/bin/kundally-panel` | User command |
-| `~/.local/share/applications/kundally-panel.desktop` | Application menu entry |
-| `~/.config/autostart/kundally-panel.desktop` | Login autostart entry |
-| `~/.config/kundally-panel/config.json` | User settings |
-| `~/.local/state/kundally-panel/` | PID, position, and log files |
+| `~/.local/share/deskally/` | Installed application files |
+| `~/.local/bin/deskally` | User command |
+| `~/.local/share/applications/deskally.desktop` | Application menu entry |
+| `~/.config/autostart/deskally.desktop` | Login autostart entry |
+| `~/.config/deskally/config.json` | User settings |
+| `~/.local/state/deskally/` | PID, position, and log files |
 
 ## Privacy and network use
 
@@ -150,15 +150,15 @@ These services naturally see the public IP making the request. WAN IP and city c
 If the panel does not open, check its status and logs first:
 
 ```bash
-kundally-panel status
-kundally-panel logs
-kundally-panel restart
+deskally status
+deskally logs
+deskally restart
 ```
 
-If the shell reports `kundally-panel: command not found`, make sure `~/.local/bin` is in PATH or use the full path:
+If the shell reports `deskally: command not found`, make sure `~/.local/bin` is in PATH or use the full path:
 
 ```bash
-~/.local/bin/kundally-panel restart
+~/.local/bin/deskally restart
 ```
 
 If the city is empty, check the internet connection or enter it in **Settings → City**. If a temperature shows `—`, install `lm-sensors` and verify that the hardware exposes a supported sensor. If an enabled row is missing, restart the panel. If the panel is outside the visible desktop, use **Reset position** in the right-click menu.
@@ -184,7 +184,7 @@ From the project directory:
 The uninstaller removes the application, command, menu entry, and autostart entry. It preserves personal settings for a future installation. To remove settings and state as well, run:
 
 ```bash
-rm -rf ~/.config/kundally-panel ~/.local/state/kundally-panel
+rm -rf ~/.config/deskally ~/.local/state/deskally
 ```
 
 ## Development
@@ -192,13 +192,13 @@ rm -rf ~/.config/kundally-panel ~/.local/state/kundally-panel
 Run the source version and the test suite with:
 
 ```bash
-python3 -m kundally_panel
+python3 -m deskally
 python3 -m unittest discover -s tests -v
 ```
 
 Main directories:
 
-- `kundally_panel/`: GTK interface, collectors, configuration, translations, and theme code
+- `deskally/`: GTK interface, collectors, configuration, translations, and theme code
 - `scripts/`: unified terminal command
 - `assets/`: application icon and `.desktop` template
 - `tests/`: core unit tests that run without network access
@@ -208,4 +208,4 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for the contribution workflow.
 
 ## License
 
-KundALLY Panel is released under the [MIT License](LICENSE).
+DeskALLY is released under the [MIT License](LICENSE).

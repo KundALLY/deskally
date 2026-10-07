@@ -1,15 +1,15 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-app_root="${KUNDALLY_PANEL_HOME:-$HOME/.local/share/kundally-panel}"
-state_dir="${XDG_STATE_HOME:-$HOME/.local/state}/kundally-panel"
+app_root="${DESKALLY_HOME:-$HOME/.local/share/deskally}"
+state_dir="${XDG_STATE_HOME:-$HOME/.local/state}/deskally"
 pid_file="$state_dir/panel.pid"
 log_file="$state_dir/panel.log"
-runner="${KUNDALLY_PANEL_RUNNER:-$HOME/.local/libexec/kundally-panel-app}"
+runner="${DESKALLY_RUNNER:-$HOME/.local/libexec/deskally-app}"
 
 usage() {
   cat <<'EOF'
-Kullanım / Usage: kundally-panel KOMUT
+Kullanım / Usage: deskally KOMUT
 
   start                 Paneli başlat / Start the panel
   stop                  Paneli kapat / Stop the panel
@@ -23,7 +23,7 @@ Kullanım / Usage: kundally-panel KOMUT
 Renkler / Colors: turkuaz/cyan, mavi/blue, kirmizi/red,
                   yesil/green, mor/purple, altin/gold veya/or #RRGGBB
 
-Örnek / Example: kundally-panel color mavi
+Örnek / Example: deskally color mavi
 EOF
 }
 
@@ -37,14 +37,14 @@ is_running() {
 start_panel() {
   mkdir -p "$state_dir"
   if is_running; then
-    echo "KundALLY Panel zaten çalışıyor."
+    echo "DeskALLY zaten çalışıyor."
     return 0
   fi
   rm -f "$pid_file"
   nohup "$runner" </dev/null >>"$log_file" 2>&1 &
   for _ in {1..40}; do
     if is_running; then
-      echo "KundALLY Panel başlatıldı."
+      echo "DeskALLY başlatıldı."
       return 0
     fi
     sleep 0.1
@@ -68,25 +68,25 @@ stop_panel() {
     fi
   fi
   rm -f "$pid_file"
-  echo "KundALLY Panel kapatıldı."
+  echo "DeskALLY kapatıldı."
 }
 
 show_status() {
   if is_running; then
-    echo "KundALLY Panel çalışıyor (PID $(cat "$pid_file"))."
+    echo "DeskALLY çalışıyor (PID $(cat "$pid_file"))."
   else
-    echo "KundALLY Panel çalışmıyor."
+    echo "DeskALLY çalışmıyor."
     return 1
   fi
 }
 
 set_color() {
   if [[ $# -ne 1 ]]; then
-    echo "Kullanım: kundally-panel color RENK" >&2
+    echo "Kullanım: deskally color RENK" >&2
     return 2
   fi
   PYTHONPATH="$app_root${PYTHONPATH:+:$PYTHONPATH}" \
-    python3 -m kundally_panel.theme "$1"
+    python3 -m deskally.theme "$1"
   stop_panel >/dev/null
   start_panel
 }
@@ -106,7 +106,7 @@ case "${1:-help}" in
   color|renk) shift; set_color "$@" ;;
   version|surum)
     PYTHONPATH="$app_root${PYTHONPATH:+:$PYTHONPATH}" \
-      python3 -c 'from kundally_panel import __version__; print(__version__)'
+      python3 -c 'from deskally import __version__; print(__version__)'
     ;;
   help|-h|--help|yardim) usage ;;
   *) echo "Bilinmeyen komut: $1" >&2; usage >&2; exit 2 ;;

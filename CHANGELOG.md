@@ -1,5 +1,13 @@
 # Değişiklik günlüğü
 
+## 0.7.0 — 2026-10-08
+
+- Projenin adı DeskALLY olarak değiştirildi.
+- Ana terminal komutu `deskally` oldu.
+- Uygulama menüsü, simge, kurulum yolları ve iki dildeki kılavuzlar yeni ada taşındı.
+- Eski KundALLY Panel ayarlarının ve pencere konumunun otomatik taşınması eklendi.
+- Eski kurulum dosyaları yeni kurulum sırasında temizleniyor.
+
 ## 0.6.0 — 2026-10-08
 
 - Panel arayüzüne Türkçe ve İngilizce dil seçimi eklendi.
