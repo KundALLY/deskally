@@ -1,0 +1,16 @@
+[project]
+name = "kundally-panel"
+version = "0.1.0"
+description = "A compact draggable system and network panel for Linux desktops"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+authors = [{name = "KundALLY"}]
+keywords = ["linux", "desktop", "gtk", "system-monitor", "debian"]
+
+[project.urls]
+Homepage = "https://github.com/"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"

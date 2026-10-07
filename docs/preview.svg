@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="560" viewBox="0 0 900 560">
+  <defs>
+    <linearGradient id="desktop" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#17253b"/><stop offset="1" stop-color="#080d16"/>
+    </linearGradient>
+    <filter id="shadow"><feDropShadow dx="0" dy="14" stdDeviation="16" flood-opacity=".45"/></filter>
+  </defs>
+  <rect width="900" height="560" rx="22" fill="url(#desktop)"/>
+  <circle cx="110" cy="92" r="150" fill="#00e5ff" opacity=".055"/>
+  <circle cx="760" cy="460" r="240" fill="#1783ff" opacity=".07"/>
+  <g transform="translate(585 77)" filter="url(#shadow)" font-family="DejaVu Sans, sans-serif">
+    <rect width="246" height="405" rx="22" fill="#050a12" fill-opacity=".97" stroke="#00e5ff" stroke-width="2"/>
+    <g transform="translate(15 17)">
+      <circle cx="8" cy="9" r="6" fill="none" stroke="#00e5ff" stroke-width="3"/>
+      <text x="22" y="14" fill="#00e5ff" font-weight="700" font-size="17">KundALLY</text>
+      <text x="213" y="14" fill="#fff" font-weight="700" font-size="14" text-anchor="end">01:27</text>
+      <text y="38" fill="#cfefff" font-weight="700" font-size="10">Perşembe 8 Ekim 2026</text>
+      <rect y="49" width="216" height="27" rx="6" fill="#00e5ff" fill-opacity=".10" stroke="#00e5ff" stroke-opacity=".28"/>
+      <text x="108" y="67" fill="#fff" font-size="11" font-weight="700" text-anchor="middle">310 GÜN • 22:32:41</text>
+      <path d="M0 89h216" stroke="#00e5ff" opacity=".55"/>
+      <text y="108" fill="#00e5ff" font-size="11" font-weight="700">NETWORK</text>
+      <g font-size="11" font-weight="700">
+        <rect y="118" width="216" height="34" rx="7" fill="#00dcff" opacity=".06"/>
+        <text x="8" y="139" fill="#b5f6ff">WAN</text><text x="208" y="139" fill="#fff" text-anchor="end">203.0.113.24</text>
+        <rect y="158" width="216" height="34" rx="7" fill="#00dcff" opacity=".06"/>
+        <text x="8" y="179" fill="#b5f6ff">IF</text><text x="208" y="179" fill="#fff" text-anchor="end">wlan0</text>
+        <rect y="198" width="216" height="34" rx="7" fill="#00dcff" opacity=".06"/>
+        <text x="8" y="219" fill="#b5f6ff">LOC</text><text x="208" y="219" fill="#fff" text-anchor="end">Fethiye</text>
+      </g>
+      <path d="M0 246h216" stroke="#00e5ff" opacity=".55"/>
+      <text y="265" fill="#00e5ff" font-size="11" font-weight="700">SYSTEM</text>
+      <g font-size="11" font-weight="700">
+        <rect y="275" width="216" height="34" rx="7" fill="#00dcff" opacity=".06"/>
+        <text x="8" y="296" fill="#b5f6ff">CPU</text><text x="208" y="296" fill="#fff" text-anchor="end">18% 57.1°C</text>
+        <rect y="315" width="216" height="34" rx="7" fill="#00dcff" opacity=".06"/>
+        <text x="8" y="336" fill="#b5f6ff">GPU</text><text x="208" y="336" fill="#fff" text-anchor="end">45.0°C</text>
+        <rect y="355" width="216" height="34" rx="7" fill="#00dcff" opacity=".06"/>
+        <text x="8" y="376" fill="#b5f6ff">RAM</text><text x="208" y="376" fill="#fff" text-anchor="end">34GiB/125GiB</text>
+      </g>
+    </g>
+  </g>
+  <g transform="translate(65 120)" font-family="DejaVu Sans, sans-serif">
+    <text fill="#00e5ff" font-size="20" font-weight="700">KundALLY PANEL</text>
+    <text y="48" fill="#fff" font-size="38" font-weight="700">Sistemin,</text>
+    <text y="94" fill="#fff" font-size="38" font-weight="700">bir bakış uzağında.</text>
+    <text y="143" fill="#b8c8dc" font-size="17">Sürükle • Özelleştir • Takip et</text>
+    <g transform="translate(0 185)" font-size="14" font-weight="700">
+      <rect width="132" height="38" rx="19" fill="#00e5ff"/><text x="66" y="24" fill="#041019" text-anchor="middle">GTK 3</text>
+      <rect x="144" width="154" height="38" rx="19" fill="none" stroke="#00e5ff"/><text x="221" y="24" fill="#cfefff" text-anchor="middle">Debian / Linux</text>
+    </g>
+  </g>
+</svg>

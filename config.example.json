@@ -1,0 +1,10 @@
+{
+  "title": "KundALLY",
+  "countdown_target": "2027-08-15T00:00:00",
+  "show_countdown": true,
+  "show_public_ip": true,
+  "show_location": true,
+  "always_on_top": true,
+  "accent_color": "#00e5ff",
+  "panel_width": 190
+}
