@@ -11,11 +11,17 @@ from .config import CONFIG_FILE, load_config, save_config
 
 PALETTE = {
     "turkuaz": "#00e5ff",
+    "cyan": "#00e5ff",
     "mavi": "#3b82f6",
+    "blue": "#3b82f6",
     "kirmizi": "#ff3b5c",
+    "red": "#ff3b5c",
     "yesil": "#22c55e",
+    "green": "#22c55e",
     "mor": "#a855f7",
+    "purple": "#a855f7",
     "altin": "#f5b942",
+    "gold": "#f5b942",
 }
 
 

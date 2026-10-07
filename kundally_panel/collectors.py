@@ -20,6 +20,14 @@ MONTHS_TR = (
     "", "Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran",
     "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık",
 )
+DAYS_EN = (
+    "Monday", "Tuesday", "Wednesday", "Thursday",
+    "Friday", "Saturday", "Sunday",
+)
+MONTHS_EN = (
+    "", "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December",
+)
 
 
 def human_bytes(value: int) -> str:
@@ -166,7 +174,7 @@ def local_ip() -> str:
     return "—"
 
 
-def public_ip() -> str:
+def public_ip(language: str = "tr") -> str:
     sources = (
         ("https://www.cloudflare.com/cdn-cgi/trace", True),
         ("https://api.ipify.org", False),
@@ -204,6 +212,8 @@ def public_ip() -> str:
             continue
 
     fallback = local_ip()
+    if language == "en":
+        return f"{fallback} (local)" if fallback != "—" else "No connection"
     return f"{fallback} (yerel)" if fallback != "—" else "Bağlantı yok"
 
 
@@ -253,17 +263,25 @@ def turkish_date(moment: datetime | None = None) -> str:
     return f"{DAYS_TR[moment.weekday()]} {moment.day} {MONTHS_TR[moment.month]} {moment.year}"
 
 
-def countdown(target_text: str, moment: datetime | None = None) -> str:
+def localized_date(language: str, moment: datetime | None = None) -> str:
+    moment = moment or datetime.now()
+    if language == "en":
+        return f"{DAYS_EN[moment.weekday()]} {moment.day} {MONTHS_EN[moment.month]} {moment.year}"
+    return turkish_date(moment)
+
+
+def countdown(target_text: str, moment: datetime | None = None, language: str = "tr") -> str:
     moment = moment or datetime.now()
     try:
         target = datetime.fromisoformat(target_text)
     except ValueError:
-        return "Tarih ayarlanmadı"
+        return "Date not set" if language == "en" else "Tarih ayarlanmadı"
     seconds = max(0, int((target - moment).total_seconds()))
     days, seconds = divmod(seconds, 86_400)
     hours, seconds = divmod(seconds, 3_600)
     minutes, seconds = divmod(seconds, 60)
-    return f"{days:03d} GÜN • {hours:02d}:{minutes:02d}:{seconds:02d}"
+    unit = "DAYS" if language == "en" else "GÜN"
+    return f"{days:03d} {unit} • {hours:02d}:{minutes:02d}:{seconds:02d}"
 
 
 class SystemCollector:

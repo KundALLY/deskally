@@ -1,5 +1,13 @@
 # Değişiklik günlüğü
 
+## 0.6.0 — 2026-10-08
+
+- Panel arayüzüne Türkçe ve İngilizce dil seçimi eklendi.
+- Tarih, geri sayım, ayarlar, sağ tık menüsü ve açıklamalar seçilen dile bağlandı.
+- Hazır renklerin İngilizce adları komut satırına eklendi.
+- Türkçe ve İngilizce ayrıntılı kurulum ve kullanım kılavuzları hazırlandı.
+- Örnek yapılandırma güncel ayarların tamamını içerecek şekilde yenilendi.
+
 ## 0.5.0 — 2026-10-08
 
 - Bütün terminal işlemleri tek `kundally-panel` komutu altında toplandı.

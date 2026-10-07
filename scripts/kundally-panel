@@ -9,18 +9,21 @@ runner="${KUNDALLY_PANEL_RUNNER:-$HOME/.local/libexec/kundally-panel-app}"
 
 usage() {
   cat <<'EOF'
-Kullanım: kundally-panel KOMUT
+Kullanım / Usage: kundally-panel KOMUT
 
-  start                 Paneli başlat
-  stop                  Paneli kapat
-  restart               Paneli yeniden başlat
-  status                Çalışma durumunu göster
-  logs                  Son günlük kayıtlarını göster
-  color RENK            Rengi değiştir (mavi, kirmizi, yesil, mor, altin, turkuaz)
-  version               Sürümü göster
-  help                  Bu yardımı göster
+  start                 Paneli başlat / Start the panel
+  stop                  Paneli kapat / Stop the panel
+  restart               Yeniden başlat / Restart the panel
+  status                Durumu göster / Show status
+  logs                  Günlükleri göster / Show recent logs
+  color RENK/COLOR      Rengi değiştir / Change the accent color
+  version               Sürümü göster / Show version
+  help                  Yardımı göster / Show this help
 
-Örnek: kundally-panel color mavi
+Renkler / Colors: turkuaz/cyan, mavi/blue, kirmizi/red,
+                  yesil/green, mor/purple, altin/gold veya/or #RRGGBB
+
+Örnek / Example: kundally-panel color mavi
 EOF
 }
 

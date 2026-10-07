@@ -13,6 +13,7 @@ APP_ID = "kundally-panel"
 
 DEFAULT_CONFIG: dict[str, Any] = {
     "title": "KundALLY",
+    "language": "tr",
     "countdown_target": "2027-08-15T00:00:00",
     "show_countdown": True,
     "show_public_ip": True,
@@ -42,6 +43,10 @@ def normalize_config(candidate: dict[str, Any]) -> dict[str, Any]:
     result = deepcopy(DEFAULT_CONFIG)
     for key, default in DEFAULT_CONFIG.items():
         value = candidate.get(key)
+        if key == "language":
+            if value in ("tr", "en"):
+                result[key] = value
+            continue
         if isinstance(default, bool):
             if isinstance(value, bool):
                 result[key] = value

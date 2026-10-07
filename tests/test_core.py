@@ -5,8 +5,9 @@ from datetime import datetime
 from pathlib import Path
 from unittest import mock
 
-from kundally_panel.collectors import city, countdown, cpu_percent, human_bytes, local_ip, memory_usage, public_ip, turkish_date
+from kundally_panel.collectors import city, countdown, cpu_percent, human_bytes, local_ip, localized_date, memory_usage, public_ip, turkish_date
 from kundally_panel.config import DEFAULT_CONFIG, load_config, load_position, save_config, save_position
+from kundally_panel.i18n import STRINGS
 from kundally_panel.theme import resolve_color, set_accent
 
 
@@ -27,6 +28,17 @@ class CollectorTests(unittest.TestCase):
         now = datetime(2026, 10, 8, 10, 0, 0)
         self.assertEqual(countdown("2026-10-09T12:02:03", now), "001 GÜN • 02:02:03")
 
+    def test_english_date_and_countdown(self):
+        now = datetime(2026, 10, 8, 10, 0, 0)
+        self.assertEqual(localized_date("en", now), "Thursday 8 October 2026")
+        self.assertEqual(
+            countdown("2026-10-09T12:02:03", now, "en"),
+            "001 DAYS • 02:02:03",
+        )
+
+    def test_translation_tables_have_matching_keys(self):
+        self.assertEqual(set(STRINGS["tr"]), set(STRINGS["en"]))
+
     def test_human_bytes(self):
         self.assertEqual(human_bytes(1024 ** 3), "1GiB")
 
@@ -45,6 +57,13 @@ class CollectorTests(unittest.TestCase):
         with mock.patch("kundally_panel.collectors.subprocess.run", return_value=failed_curl), \
              mock.patch("kundally_panel.collectors.fetch_text", return_value=trace):
             self.assertEqual(public_ip(), "203.0.113.8")
+
+    def test_public_ip_english_offline_message(self):
+        failed_curl = mock.Mock(returncode=1, stdout="")
+        with mock.patch("kundally_panel.collectors.subprocess.run", return_value=failed_curl), \
+             mock.patch("kundally_panel.collectors.fetch_text", side_effect=OSError("offline")), \
+             mock.patch("kundally_panel.collectors.local_ip", return_value="—"):
+            self.assertEqual(public_ip("en"), "No connection")
 
     def test_public_ip_prefers_working_ipv4_curl(self):
         completed = mock.Mock(returncode=0, stdout="ip=192.0.2.25\nloc=TR\n")
@@ -80,6 +99,12 @@ class ConfigTests(unittest.TestCase):
             path.write_text("not json")
             self.assertEqual(load_config(path), DEFAULT_CONFIG)
 
+    def test_unknown_language_falls_back_to_turkish(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "config.json"
+            path.write_text('{"language": "de"}')
+            self.assertEqual(load_config(path)["language"], "tr")
+
     def test_position_round_trip(self):
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "position.json"
@@ -97,6 +122,9 @@ class ConfigTests(unittest.TestCase):
 
     def test_custom_hex_color(self):
         self.assertEqual(resolve_color("#12ABef"), "#12abef")
+
+    def test_english_color_alias(self):
+        self.assertEqual(resolve_color("blue"), "#3b82f6")
 
 
 if __name__ == "__main__":

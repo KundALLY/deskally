@@ -24,8 +24,8 @@ from .collectors import (
     default_interface,
     gpu_temperature,
     local_ip,
+    localized_date,
     public_ip,
-    turkish_date,
 )
 from .config import (
     LOCK_FILE,
@@ -36,6 +36,7 @@ from .config import (
     save_config,
     save_position,
 )
+from .i18n import text
 
 
 BASE_CSS = """
@@ -84,10 +85,12 @@ window { background-color: transparent; }
 
 class SettingsDialog(Gtk.Dialog):
     def __init__(self, parent: Gtk.Window, config: dict) -> None:
-        super().__init__(title="KundALLY Panel Ayarları", transient_for=parent, modal=True)
+        language = config["language"]
+        translate = lambda key: text(language, key)
+        super().__init__(title=translate("settings_title"), transient_for=parent, modal=True)
         self.add_buttons(
-            "İptal", Gtk.ResponseType.CANCEL,
-            "Kaydet", Gtk.ResponseType.OK,
+            translate("cancel"), Gtk.ResponseType.CANCEL,
+            translate("save"), Gtk.ResponseType.OK,
         )
         self.set_default_size(430, -1)
         self.set_border_width(12)
@@ -95,11 +98,18 @@ class SettingsDialog(Gtk.Dialog):
         grid = Gtk.Grid(column_spacing=12, row_spacing=10)
         self.get_content_area().add(grid)
 
-        grid.attach(Gtk.Label(label="Panel adı", xalign=0), 0, 0, 1, 1)
+        grid.attach(Gtk.Label(label=translate("panel_name"), xalign=0), 0, 0, 1, 1)
         self.title_entry = Gtk.Entry(text=config["title"])
         grid.attach(self.title_entry, 1, 0, 1, 1)
 
-        grid.attach(Gtk.Label(label="Kronometre günü", xalign=0, yalign=0), 0, 1, 1, 1)
+        grid.attach(Gtk.Label(label=translate("language"), xalign=0), 0, 1, 1, 1)
+        self.language_combo = Gtk.ComboBoxText()
+        self.language_combo.append("tr", "Türkçe")
+        self.language_combo.append("en", "English")
+        self.language_combo.set_active_id(language)
+        grid.attach(self.language_combo, 1, 1, 1, 1)
+
+        grid.attach(Gtk.Label(label=translate("countdown_day"), xalign=0, yalign=0), 0, 2, 1, 1)
         self.calendar = Gtk.Calendar()
         try:
             target = datetime.fromisoformat(config["countdown_target"])
@@ -107,9 +117,9 @@ class SettingsDialog(Gtk.Dialog):
             target = datetime.now()
         self.calendar.select_month(target.month - 1, target.year)
         self.calendar.select_day(target.day)
-        grid.attach(self.calendar, 1, 1, 1, 1)
+        grid.attach(self.calendar, 1, 2, 1, 1)
 
-        grid.attach(Gtk.Label(label="Kronometre saati", xalign=0), 0, 2, 1, 1)
+        grid.attach(Gtk.Label(label=translate("countdown_time"), xalign=0), 0, 3, 1, 1)
         time_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=5)
         self.hour_spin = Gtk.SpinButton.new_with_range(0, 23, 1)
         self.minute_spin = Gtk.SpinButton.new_with_range(0, 59, 1)
@@ -125,53 +135,53 @@ class SettingsDialog(Gtk.Dialog):
         time_box.pack_start(self.minute_spin, False, False, 0)
         time_box.pack_start(Gtk.Label(label=":"), False, False, 0)
         time_box.pack_start(self.second_spin, False, False, 0)
-        grid.attach(time_box, 1, 2, 1, 1)
+        grid.attach(time_box, 1, 3, 1, 1)
 
-        grid.attach(Gtk.Label(label="Panel rengi", xalign=0), 0, 3, 1, 1)
+        grid.attach(Gtk.Label(label=translate("panel_color"), xalign=0), 0, 4, 1, 1)
         self.color_button = Gtk.ColorButton()
         color = Gdk.RGBA()
         color.parse(config["accent_color"])
         self.color_button.set_rgba(color)
-        self.color_button.set_title("KundALLY Panel rengini seç")
-        grid.attach(self.color_button, 1, 3, 1, 1)
+        self.color_button.set_title(translate("color_picker_title"))
+        grid.attach(self.color_button, 1, 4, 1, 1)
 
-        grid.attach(Gtk.Label(label="Panel genişliği", xalign=0), 0, 4, 1, 1)
+        grid.attach(Gtk.Label(label=translate("panel_width"), xalign=0), 0, 5, 1, 1)
         self.width_spin = Gtk.SpinButton.new_with_range(160, 420, 5)
         self.width_spin.set_value(config["panel_width"])
-        grid.attach(self.width_spin, 1, 4, 1, 1)
+        grid.attach(self.width_spin, 1, 5, 1, 1)
 
-        grid.attach(Gtk.Label(label="Şehir", xalign=0), 0, 5, 1, 1)
+        grid.attach(Gtk.Label(label=translate("city"), xalign=0), 0, 6, 1, 1)
         self.city_entry = Gtk.Entry(text=config["manual_city"])
-        self.city_entry.set_placeholder_text("Boş bırakırsan otomatik bulunur")
-        self.city_entry.set_tooltip_text("Otomatik konum çalışmazsa şehir adını buraya yazabilirsin")
-        grid.attach(self.city_entry, 1, 5, 1, 1)
+        self.city_entry.set_placeholder_text(translate("city_placeholder"))
+        self.city_entry.set_tooltip_text(translate("city_tooltip"))
+        grid.attach(self.city_entry, 1, 6, 1, 1)
 
-        self.countdown_check = Gtk.CheckButton(label="Geri sayımı göster")
+        self.countdown_check = Gtk.CheckButton(label=translate("show_countdown"))
         self.countdown_check.set_active(config["show_countdown"])
-        grid.attach(self.countdown_check, 0, 6, 2, 1)
+        grid.attach(self.countdown_check, 0, 7, 2, 1)
 
-        self.wan_check = Gtk.CheckButton(label="WAN IP adresini göster")
+        self.wan_check = Gtk.CheckButton(label=translate("show_wan"))
         self.wan_check.set_active(config["show_public_ip"])
-        grid.attach(self.wan_check, 0, 7, 2, 1)
+        grid.attach(self.wan_check, 0, 8, 2, 1)
 
-        self.local_ip_check = Gtk.CheckButton(label="Yerel IP adresini göster")
+        self.local_ip_check = Gtk.CheckButton(label=translate("show_local_ip"))
         self.local_ip_check.set_active(config["show_local_ip"])
-        grid.attach(self.local_ip_check, 0, 8, 2, 1)
+        grid.attach(self.local_ip_check, 0, 9, 2, 1)
 
-        self.location_check = Gtk.CheckButton(label="Şehir bilgisini göster")
+        self.location_check = Gtk.CheckButton(label=translate("show_city"))
         self.location_check.set_active(config["show_location"])
-        grid.attach(self.location_check, 0, 9, 2, 1)
+        grid.attach(self.location_check, 0, 10, 2, 1)
 
-        self.top_check = Gtk.CheckButton(label="Diğer pencerelerin üstünde tut")
+        self.top_check = Gtk.CheckButton(label=translate("keep_above"))
         self.top_check.set_active(config["always_on_top"])
-        grid.attach(self.top_check, 0, 10, 2, 1)
+        grid.attach(self.top_check, 0, 11, 2, 1)
 
         note = Gtk.Label(
-            label="İpucu: Paneli sol tuşla tutup sürükle. Menüyü sağ tıkla aç.",
+            label=translate("tip"),
             xalign=0,
         )
         note.set_line_wrap(True)
-        grid.attach(note, 0, 11, 2, 1)
+        grid.attach(note, 0, 12, 2, 1)
         self.show_all()
 
     def values(self) -> dict:
@@ -192,6 +202,7 @@ class SettingsDialog(Gtk.Dialog):
         )
         return {
             "title": self.title_entry.get_text().strip() or "KundALLY",
+            "language": self.language_combo.get_active_id() or "tr",
             "countdown_target": target.isoformat(),
             "show_countdown": self.countdown_check.get_active(),
             "show_public_ip": self.wan_check.get_active(),
@@ -255,7 +266,7 @@ class KundallyPanel(Gtk.Window):
         GLib.timeout_add_seconds(1, self.update_time)
         self.update_time()
         self.jobs = {
-            "wan": (public_ip, 60),
+            "wan": (lambda: public_ip(self.config["language"]), 60),
             "iface": (default_interface, 10),
             "local_ip": (local_ip, 10),
             "city": (self.city_value, 300),
@@ -307,13 +318,13 @@ class KundallyPanel(Gtk.Window):
             f"◉ {self.config['title']}", "logo", 0.0
         )
         self.labels["clock"] = self.make_label("--:--", "clock", 1.0)
-        settings_button = Gtk.Button(label="⚙")
-        settings_button.set_name("settings-button")
-        settings_button.set_relief(Gtk.ReliefStyle.NONE)
-        settings_button.set_tooltip_text("Panel ayarları")
-        settings_button.connect("clicked", self.open_settings)
+        self.settings_button = Gtk.Button(label="⚙")
+        self.settings_button.set_name("settings-button")
+        self.settings_button.set_relief(Gtk.ReliefStyle.NONE)
+        self.settings_button.set_tooltip_text(text(self.config["language"], "settings_tooltip"))
+        self.settings_button.connect("clicked", self.open_settings)
         header.pack_start(self.labels["logo"], False, False, 0)
-        header.pack_end(settings_button, False, False, 0)
+        header.pack_end(self.settings_button, False, False, 0)
         header.pack_end(self.labels["clock"], False, False, 0)
         self.hud.pack_start(header, False, False, 0)
 
@@ -323,13 +334,15 @@ class KundallyPanel(Gtk.Window):
         self.hud.pack_start(self.labels["countdown"], False, False, 0)
 
         self.add_line()
-        self.hud.pack_start(self.make_label("NETWORK", "title", 0.0), False, False, 0)
+        self.network_title = self.make_label(text(self.config["language"], "network"), "title", 0.0)
+        self.hud.pack_start(self.network_title, False, False, 0)
         self.add_row("WAN", "wan")
         self.add_row("IF", "iface")
         self.add_row("IP", "local_ip")
         self.add_row("LOC", "city")
         self.add_line()
-        self.hud.pack_start(self.make_label("SYSTEM", "title", 0.0), False, False, 0)
+        self.system_title = self.make_label(text(self.config["language"], "system"), "title", 0.0)
+        self.hud.pack_start(self.system_title, False, False, 0)
         self.add_row("CPU", "cpu")
         self.add_row("GPU", "gput")
         self.add_row("RAM", "ram")
@@ -354,14 +367,15 @@ class KundallyPanel(Gtk.Window):
 
     def build_menu(self) -> Gtk.Menu:
         menu = Gtk.Menu()
-        for title, callback in (
-            ("Şimdi yenile", self.refresh_all),
-            ("Ayarlar", self.open_settings),
-            ("Konumu sıfırla", self.reset_position),
-            ("Hakkında", self.show_about),
-            ("Kapat", lambda *_: Gtk.main_quit()),
+        language = self.config["language"]
+        for key, callback in (
+            ("menu_refresh", self.refresh_all),
+            ("menu_settings", self.open_settings),
+            ("menu_reset", self.reset_position),
+            ("menu_about", self.show_about),
+            ("menu_quit", lambda *_: Gtk.main_quit()),
         ):
-            item = Gtk.MenuItem(label=title)
+            item = Gtk.MenuItem(label=text(language, key))
             item.connect("activate", callback)
             menu.append(item)
         menu.show_all()
@@ -378,9 +392,12 @@ class KundallyPanel(Gtk.Window):
 
     def update_time(self) -> bool:
         now = datetime.now()
+        language = self.config["language"]
         self.labels["clock"].set_text(now.strftime("%H:%M"))
-        self.labels["date"].set_text(turkish_date(now))
-        self.labels["countdown"].set_text(countdown(self.config["countdown_target"], now))
+        self.labels["date"].set_text(localized_date(language, now))
+        self.labels["countdown"].set_text(
+            countdown(self.config["countdown_target"], now, language)
+        )
         return self.alive
 
     def city_value(self) -> str:
@@ -413,7 +430,8 @@ class KundallyPanel(Gtk.Window):
         except Exception:
             value = "—"
         self.labels[name].set_text(value)
-        self.labels[name].set_tooltip_text(f"Son yenileme: {datetime.now():%H:%M:%S}")
+        updated = text(self.config["language"], "updated")
+        self.labels[name].set_tooltip_text(f"{updated}: {datetime.now():%H:%M:%S}")
         if name in ("wan", "local_ip", "city"):
             print(f"KundALLY {name} sonucu: {value}", file=sys.stderr, flush=True)
         return False
@@ -428,6 +446,7 @@ class KundallyPanel(Gtk.Window):
             self.config.update(dialog.values())
             save_config(self.config)
             self.labels["logo"].set_text(f"◉ {self.config['title']}")
+            self.apply_language()
             self.hud.set_size_request(self.config["panel_width"], -1)
             self.set_keep_above(self.config["always_on_top"])
             self.apply_css()
@@ -435,6 +454,14 @@ class KundallyPanel(Gtk.Window):
             self.update_time()
             self.refresh_all()
         dialog.destroy()
+
+    def apply_language(self) -> None:
+        """Apply the selected language immediately after settings are saved."""
+        language = self.config["language"]
+        self.network_title.set_text(text(language, "network"))
+        self.system_title.set_text(text(language, "system"))
+        self.settings_button.set_tooltip_text(text(language, "settings_tooltip"))
+        self.context_menu = self.build_menu()
 
     def update_visibility(self) -> None:
         self.labels["countdown"].set_visible(self.config["show_countdown"])
@@ -457,7 +484,7 @@ class KundallyPanel(Gtk.Window):
         dialog = Gtk.AboutDialog(transient_for=self, modal=True)
         dialog.set_program_name("KundALLY Panel")
         dialog.set_version(__version__)
-        dialog.set_comments("Linux masaüstü için sürüklenebilir sistem ve ağ paneli.")
+        dialog.set_comments(text(self.config["language"], "about"))
         dialog.set_website("https://github.com/")
         dialog.set_license_type(Gtk.License.MIT_X11)
         dialog.run()
