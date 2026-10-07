@@ -1,5 +1,11 @@
 # Değişiklik günlüğü
 
+## 0.2.1 — 2026-10-08
+
+- Dış IP sorgusuna Debian'da çalışan IPv4 `curl` yedeği eklendi.
+- Dış IP beklenirken yerel IP'nin hemen gösterilmesi sağlandı.
+- IP alınamadığında boş değer yerine açık bağlantı durumu gösteriliyor.
+
 ## 0.2.0 — 2026-10-08
 
 - Kronometre için takvim ve saat seçici eklendi.

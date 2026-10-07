@@ -115,6 +115,47 @@ def fetch_text(url: str, timeout: float = 5.0) -> str:
         return response.read(256).decode("utf-8", "replace").strip()
 
 
+def _extract_ip(response: str, is_trace: bool) -> str:
+    candidate = response.strip()
+    if is_trace:
+        candidate = next(
+            (line.removeprefix("ip=").strip() for line in response.splitlines()
+             if line.startswith("ip=")),
+            "",
+        )
+    ip_address(candidate)
+    return candidate
+
+
+def local_ip() -> str:
+    """Return a useful LAN address without sending network traffic."""
+    connection = None
+    try:
+        connection = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        connection.connect(("1.1.1.1", 80))
+        candidate = connection.getsockname()[0]
+        if not candidate.startswith("127."):
+            return candidate
+    except OSError:
+        pass
+    finally:
+        if connection is not None:
+            connection.close()
+
+    try:
+        output = subprocess.run(
+            ["hostname", "-I"], capture_output=True, text=True,
+            timeout=2, check=False,
+        ).stdout
+        for candidate in output.split():
+            address = ip_address(candidate)
+            if address.version == 4 and not address.is_loopback:
+                return candidate
+    except (OSError, ValueError, subprocess.SubprocessError):
+        pass
+    return "—"
+
+
 def public_ip() -> str:
     sources = (
         ("https://www.cloudflare.com/cdn-cgi/trace", True),
@@ -122,21 +163,38 @@ def public_ip() -> str:
         ("https://ident.me", False),
         ("https://ifconfig.me/ip", False),
     )
+
+    # İlk prototipte çalışan yolu önce dene; çoğu Debian sisteminde anında sonuçlanır.
+    try:
+        result = subprocess.run(
+            ["curl", "-4", "-fsS", "--max-time", "3", sources[0][0]],
+            capture_output=True, text=True, timeout=4, check=False,
+        )
+        if result.returncode == 0:
+            return _extract_ip(result.stdout, True)
+    except (OSError, ValueError, subprocess.SubprocessError):
+        pass
+
     for url, is_trace in sources:
         try:
-            response = fetch_text(url)
-            candidate = response
-            if is_trace:
-                candidate = next(
-                    (line.removeprefix("ip=").strip() for line in response.splitlines()
-                     if line.startswith("ip=")),
-                    "",
-                )
-            ip_address(candidate)
-            return candidate
+            return _extract_ip(fetch_text(url, timeout=2.0), is_trace)
         except Exception:
             continue
-    return "—"
+
+    # İlk servis kapalıysa diğer servisleri de IPv4 curl ile dene.
+    for url, is_trace in sources[1:]:
+        try:
+            result = subprocess.run(
+                ["curl", "-4", "-fsS", "--max-time", "3", url],
+                capture_output=True, text=True, timeout=4, check=False,
+            )
+            if result.returncode == 0:
+                return _extract_ip(result.stdout, is_trace)
+        except (OSError, ValueError, subprocess.SubprocessError):
+            continue
+
+    fallback = local_ip()
+    return f"{fallback} (yerel)" if fallback != "—" else "Bağlantı yok"
 
 
 def city() -> str:

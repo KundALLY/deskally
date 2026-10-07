@@ -5,7 +5,7 @@ from datetime import datetime
 from pathlib import Path
 from unittest import mock
 
-from kundally_panel.collectors import countdown, cpu_percent, human_bytes, memory_usage, public_ip, turkish_date
+from kundally_panel.collectors import countdown, cpu_percent, human_bytes, local_ip, memory_usage, public_ip, turkish_date
 from kundally_panel.config import DEFAULT_CONFIG, load_config, load_position, save_config, save_position
 
 
@@ -30,11 +30,33 @@ class CollectorTests(unittest.TestCase):
         self.assertEqual(human_bytes(1024 ** 3), "1GiB")
 
     def test_public_ip_uses_fallback_source(self):
-        with mock.patch(
-            "kundally_panel.collectors.fetch_text",
-            side_effect=[OSError("offline"), "198.51.100.20"],
-        ):
+        failed_curl = mock.Mock(returncode=1, stdout="")
+        with mock.patch("kundally_panel.collectors.subprocess.run", return_value=failed_curl), \
+             mock.patch(
+                 "kundally_panel.collectors.fetch_text",
+                 side_effect=[OSError("offline"), "198.51.100.20"],
+             ):
             self.assertEqual(public_ip(), "198.51.100.20")
+
+    def test_public_ip_accepts_cloudflare_trace(self):
+        trace = "fl=1\nip=203.0.113.8\nloc=TR\n"
+        failed_curl = mock.Mock(returncode=1, stdout="")
+        with mock.patch("kundally_panel.collectors.subprocess.run", return_value=failed_curl), \
+             mock.patch("kundally_panel.collectors.fetch_text", return_value=trace):
+            self.assertEqual(public_ip(), "203.0.113.8")
+
+    def test_public_ip_prefers_working_ipv4_curl(self):
+        completed = mock.Mock(returncode=0, stdout="ip=192.0.2.25\nloc=TR\n")
+        with mock.patch("kundally_panel.collectors.subprocess.run", return_value=completed), \
+             mock.patch("kundally_panel.collectors.fetch_text") as fetch:
+            self.assertEqual(public_ip(), "192.0.2.25")
+            fetch.assert_not_called()
+
+    def test_local_ip_survives_blocked_socket(self):
+        completed = mock.Mock(stdout="192.168.1.42 \n")
+        with mock.patch("kundally_panel.collectors.socket.socket", side_effect=PermissionError), \
+             mock.patch("kundally_panel.collectors.subprocess.run", return_value=completed):
+            self.assertEqual(local_ip(), "192.168.1.42")
 
 
 class ConfigTests(unittest.TestCase):

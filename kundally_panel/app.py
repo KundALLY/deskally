@@ -23,6 +23,7 @@ from .collectors import (
     countdown,
     default_interface,
     gpu_temperature,
+    local_ip,
     public_ip,
     turkish_date,
 )
@@ -248,6 +249,11 @@ class KundallyPanel(Gtk.Window):
             "gput": (gpu_temperature, 5),
             "ram": (self.collector.ram, 10),
         }
+        # Dış IP isteği tamamlanana kadar satır boş kalmasın.
+        initial_ip = local_ip()
+        self.labels["wan"].set_text(
+            f"{initial_ip} (yerel)" if initial_ip != "—" else "IP aranıyor…"
+        )
         for name, (_function, interval) in self.jobs.items():
             self.refresh(name)
             GLib.timeout_add_seconds(interval, self.refresh, name)
