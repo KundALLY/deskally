@@ -1,5 +1,12 @@
 # Değişiklik günlüğü
 
+## 0.2.2 — 2026-10-08
+
+- Eski panel sürecinin yeni sürümü engellemesi düzeltildi.
+- IP satırı daha açık olması için `WAN` yerine `IP` olarak adlandırıldı.
+- Yerel IP için `ip`, NetworkManager ve `hostname` yedekleri eklendi.
+- Görüntülenen IP sonucu tanılama günlüğüne eklendi.
+
 ## 0.2.1 — 2026-10-08
 
 - Dış IP sorgusuna Debian'da çalışan IPv4 `curl` yedeği eklendi.

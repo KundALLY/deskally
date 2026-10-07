@@ -301,7 +301,7 @@ class KundallyPanel(Gtk.Window):
 
         self.add_line()
         self.hud.pack_start(self.make_label("NETWORK", "title", 0.0), False, False, 0)
-        self.add_row("WAN", "wan")
+        self.add_row("IP", "wan")
         self.add_row("IF", "iface")
         self.add_row("LOC", "city")
         self.add_line()
@@ -386,6 +386,8 @@ class KundallyPanel(Gtk.Window):
             value = "—"
         self.labels[name].set_text(value)
         self.labels[name].set_tooltip_text(f"Son yenileme: {datetime.now():%H:%M:%S}")
+        if name == "wan":
+            print(f"KundALLY IP sonucu: {value}", file=sys.stderr, flush=True)
         return False
 
     def refresh_all(self, *_args) -> None:

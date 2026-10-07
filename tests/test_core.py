@@ -53,7 +53,7 @@ class CollectorTests(unittest.TestCase):
             fetch.assert_not_called()
 
     def test_local_ip_survives_blocked_socket(self):
-        completed = mock.Mock(stdout="192.168.1.42 \n")
+        completed = mock.Mock(stdout="2: eth0 inet 192.168.1.42/24 brd 192.168.1.255\n")
         with mock.patch("kundally_panel.collectors.socket.socket", side_effect=PermissionError), \
              mock.patch("kundally_panel.collectors.subprocess.run", return_value=completed):
             self.assertEqual(local_ip(), "192.168.1.42")

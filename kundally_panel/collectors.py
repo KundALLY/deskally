@@ -142,17 +142,24 @@ def local_ip() -> str:
         if connection is not None:
             connection.close()
 
-    try:
-        output = subprocess.run(
-            ["hostname", "-I"], capture_output=True, text=True,
-            timeout=2, check=False,
-        ).stdout
-        for candidate in output.split():
-            address = ip_address(candidate)
-            if address.version == 4 and not address.is_loopback:
-                return candidate
-    except (OSError, ValueError, subprocess.SubprocessError):
-        pass
+    commands = (
+        (["ip", "-4", "-o", "addr", "show", "scope", "global"], True),
+        (["nmcli", "-g", "IP4.ADDRESS", "device", "show"], False),
+        (["hostname", "-I"], False),
+    )
+    for command, is_ip_output in commands:
+        try:
+            output = subprocess.run(
+                command, capture_output=True, text=True, timeout=2, check=False,
+            ).stdout
+            candidates = re.findall(r"\binet\s+(\d+(?:\.\d+){3})", output) if is_ip_output \
+                else [item.split("/", 1)[0] for item in output.split()]
+            for candidate in candidates:
+                address = ip_address(candidate)
+                if address.version == 4 and not address.is_loopback:
+                    return candidate
+        except (OSError, ValueError, subprocess.SubprocessError):
+            continue
     return "—"
 
 
