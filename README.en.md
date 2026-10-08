@@ -42,10 +42,10 @@ sudo apt install lm-sensors
 
 ## Installation
 
-Download and extract the project from **Code → Download ZIP** on GitHub, or clone the repository. When the repository is published, `KULLANICI_ADI` in this example will be replaced with the actual GitHub username:
+Download and extract the project from **Code → Download ZIP** on GitHub, or clone the repository. To install from the terminal:
 
 ```bash
-git clone https://github.com/KULLANICI_ADI/deskally.git
+git clone https://github.com/KundALLY/deskally.git
 cd deskally
 ./install.sh
 ```

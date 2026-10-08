@@ -42,10 +42,10 @@ sudo apt install lm-sensors
 
 ## Kurulum
 
-GitHub sayfasında **Code → Download ZIP** ile projeyi indirip arşivi çıkarabilir veya depoyu klonlayabilirsin. Depo yayımlanırken aşağıdaki örnek adresteki `KULLANICI_ADI` alanı gerçek GitHub kullanıcı adıyla değiştirilecektir:
+GitHub sayfasında **Code → Download ZIP** ile projeyi indirip arşivi çıkarabilir veya depoyu klonlayabilirsin. Terminalden kurmak için:
 
 ```bash
-git clone https://github.com/KULLANICI_ADI/deskally.git
+git clone https://github.com/KundALLY/deskally.git
 cd deskally
 ./install.sh
 ```
