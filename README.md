@@ -4,7 +4,7 @@
 
 ![DeskALLY önizlemesi](docs/preview.svg)
 
-DeskALLY, Linux masaüstünde temel sistem ve ağ bilgilerini küçük bir pencerede gösteren açık kaynaklı bir GTK 3 uygulamasıdır. Amacı CPU, GPU, RAM, IP adresleri, şehir, tarih, saat ve kişisel geri sayımı masaüstünde tek bakışta erişilebilir tutmaktır.
+DeskALLY, Linux masaüstünde temel sistem ve ağ bilgilerini küçük bir pencerede gösteren açık kaynaklı bir GTK 3 uygulamasıdır. CPU, GPU, RAM, IP adresleri, şehir, tarih, saat ve kişisel geri sayımı gösterir.
 
 Panel başlık çubuğu kullanmaz. Fareyle doğrudan sürüklenir, son konumunu hatırlar ve görünmesini istemediğin satırları kapattığında boyunu otomatik ayarlar. Arayüz Türkçe ve İngilizce kullanılabilir.
 

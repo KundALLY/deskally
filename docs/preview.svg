@@ -41,9 +41,9 @@
   </g>
   <g transform="translate(65 120)" font-family="DejaVu Sans, sans-serif">
     <text fill="#00e5ff" font-size="20" font-weight="700">DeskALLY PANEL</text>
-    <text y="48" fill="#fff" font-size="38" font-weight="700">Sistemin,</text>
-    <text y="94" fill="#fff" font-size="38" font-weight="700">bir bakış uzağında.</text>
-    <text y="143" fill="#b8c8dc" font-size="17">Sürükle • Özelleştir • Takip et</text>
+    <text y="48" fill="#fff" font-size="38" font-weight="700">Sistem ve ağ</text>
+    <text y="94" fill="#fff" font-size="38" font-weight="700">bilgileri paneli</text>
+    <text y="143" fill="#b8c8dc" font-size="17">CPU · GPU · RAM · IP · Saat</text>
     <g transform="translate(0 185)" font-size="14" font-weight="700">
       <rect width="132" height="38" rx="19" fill="#00e5ff"/><text x="66" y="24" fill="#041019" text-anchor="middle">GTK 3</text>
       <rect x="144" width="154" height="38" rx="19" fill="none" stroke="#00e5ff"/><text x="221" y="24" fill="#cfefff" text-anchor="middle">Debian / Linux</text>
