@@ -30,7 +30,7 @@ def resolve_color(value: str) -> str:
     color = PALETTE.get(normalized, value.strip())
     if not re.fullmatch(r"#[0-9a-fA-F]{6}", color):
         choices = ", ".join(PALETTE)
-        raise ValueError(f"Bilinmeyen renk: {value}. Seçenekler: {choices} veya #RRGGBB")
+        raise ValueError(f"Unknown color: {value}. Options: {choices} or #RRGGBB")
     return color.lower()
 
 
@@ -46,15 +46,15 @@ def set_accent(value: str, path: Path = CONFIG_FILE) -> str:
 def main(arguments: list[str] | None = None) -> int:
     arguments = list(sys.argv[1:] if arguments is None else arguments)
     if len(arguments) != 1:
-        print("Kullanım: deskally color RENK", file=sys.stderr)
-        print("Renkler: " + ", ".join(PALETTE), file=sys.stderr)
+        print("Usage: deskally color COLOR", file=sys.stderr)
+        print("Colors: " + ", ".join(PALETTE), file=sys.stderr)
         return 2
     try:
         color = set_accent(arguments[0])
     except ValueError as error:
         print(error, file=sys.stderr)
         return 2
-    print(f"DeskALLY rengi değiştirildi: {color}")
+    print(f"DeskALLY accent color changed: {color}")
     return 0
 
 

@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 
-SUPPORTED_LANGUAGES = ("tr", "en")
+SUPPORTED_LANGUAGES = ("en", "tr")
 
 STRINGS = {
     "tr": {
@@ -72,5 +72,5 @@ STRINGS = {
 
 
 def text(language: str, key: str) -> str:
-    language = language if language in SUPPORTED_LANGUAGES else "tr"
+    language = language if language in SUPPORTED_LANGUAGES else "en"
     return STRINGS[language][key]

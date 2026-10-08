@@ -1,48 +1,48 @@
 # DeskALLY
 
-[Türkçe](README.md) · [English](README.en.md)
+[English](README.md) · [Türkçe](README.tr.md)
 
-![DeskALLY önizlemesi](docs/panel-istanbul.svg)
+![DeskALLY preview](docs/panel-english.svg)
 
-DeskALLY, Linux masaüstünde temel sistem ve ağ bilgilerini küçük bir pencerede gösteren açık kaynaklı bir GTK 3 uygulamasıdır. CPU, GPU, RAM, IP adresleri, şehir, tarih, saat ve kişisel geri sayımı gösterir.
+DeskALLY is an open source GTK 3 application that displays essential system and network information in a compact Linux desktop window. It shows CPU, GPU, RAM, IP addresses, city, date, time, and a personal countdown.
 
-Panel başlık çubuğu kullanmaz. Fareyle doğrudan sürüklenir, son konumunu hatırlar ve görünmesini istemediğin satırları kapattığında boyunu otomatik ayarlar. Arayüz Türkçe ve İngilizce kullanılabilir.
+The panel has no title bar. You can drag it directly with the mouse, it remembers its last position, and it resizes when optional rows are hidden. The interface is available in Turkish and English.
 
-## Özellikler
+## Features
 
-- CPU kullanımı ve sıcaklığı, GPU sıcaklığı, RAM kullanımı ve yüzdesi
-- Etkin ağ arayüzü, yerel IP, genel WAN IP ve yaklaşık şehir bilgisi
-- Takvim ve saatle ayarlanabilen kişisel geri sayım
-- Türkçe ve İngilizce arayüz, tarih ve geri sayım metni
-- Değiştirilebilir panel adı, vurgu rengi ve genişlik
-- WAN IP, yerel IP, şehir ve geri sayım satırlarını ayrı ayrı gösterme
-- Otomatik bulunamazsa şehri elle belirleme
-- Fareyle sürükleme, konumu hatırlama ve sağ tık menüsü
-- Oturum açılışında otomatik başlatma
-- Tek bir `deskally` komutu altında yönetim
-- Kullanıcı dizinine kurulum; yönetici yetkisi gerektirmez
+- CPU usage and temperature, GPU temperature, RAM usage and percentage
+- Active network interface, local IP, public WAN IP, and approximate city
+- Personal countdown configured with calendar and time controls
+- Turkish and English interface, date, and countdown text
+- Custom panel title, accent color, and width
+- Independent visibility controls for WAN IP, local IP, city, and countdown
+- Manual city override when automatic detection is unavailable
+- Direct mouse dragging, saved position, and a right-click menu
+- Automatic start at login
+- Management through one `deskally` command
+- Per-user installation with no administrator access required
 
-## Desteklenen sistemler
+## Supported systems
 
-Uygulama Debian, Ubuntu, Linux Mint ve GTK 3 kullanan benzer Linux dağıtımlarını hedefler. X11 masaüstlerinde çalışır. Wayland oturumlarında pencere konumlandırma ve her zaman üstte tutma davranışı masaüstü ortamına göre değişebilir.
+The application targets Debian, Ubuntu, Linux Mint, and similar Linux distributions with GTK 3. It works on X11 desktops. Window placement and always-on-top behavior may depend on the desktop compositor when running under Wayland.
 
-## Gereksinimler
+## Requirements
 
-Debian ve türevlerinde gerekli paketleri kur:
+Install the required packages on Debian-based systems:
 
 ```bash
 sudo apt install python3 python3-gi gir1.2-gtk-3.0
 ```
 
-Sıcaklık sensörlerinin daha geniş donanım desteği için isteğe bağlı paket:
+For broader temperature sensor support, optionally install:
 
 ```bash
 sudo apt install lm-sensors
 ```
 
-## Kurulum
+## Installation
 
-GitHub sayfasında **Code → Download ZIP** ile projeyi indirip arşivi çıkarabilir veya depoyu klonlayabilirsin. Terminalden kurmak için:
+Download and extract the project from **Code → Download ZIP** on GitHub, or clone the repository. To install from the terminal:
 
 ```bash
 git clone https://github.com/KundALLY/deskally.git
@@ -50,104 +50,108 @@ cd deskally
 ./install.sh
 ```
 
-Kurucu dosyaları `~/.local` altına kopyalar, uygulama menüsü ve otomatik başlatma kaydı oluşturur, ardından paneli açar. `~/.local/bin` PATH içinde değilse oturumu kapatıp yeniden açmak gerekebilir.
+The installer copies the application under `~/.local`, creates application menu and autostart entries, and starts the panel. If `~/.local/bin` is not in PATH, sign out and back in.
 
-Paneli hemen başlatmadan kurmak için:
+To install without starting the panel immediately:
 
 ```bash
 ./install.sh --no-start
 ```
 
-## İlk kullanım
+## Language
 
-1. Paneli taşımak için herhangi bir boş noktasında sol tuşa basılı tutup sürükle.
-2. Ayarları açmak için sağ üstteki **⚙** düğmesine bas.
-3. **Dil** listesinden **Türkçe** veya **English** seç.
-4. Panel adını, rengi, genişliği, geri sayım tarihini ve görünür satırları ayarla.
-5. **Kaydet** düğmesine bas. Değişiklikler hemen uygulanır.
-6. Yenileme, konumu sıfırlama ve kapatma seçenekleri için panele sağ tıkla.
+English is the default language. To use Turkish, open **Settings → Language**, select **Türkçe**, and click **Save**.
 
-## Komut kılavuzu
+## First use
 
-| Komut | Görevi |
+1. Hold the left mouse button anywhere on the panel and drag it.
+2. Click the **⚙** button at the top right to open settings.
+3. Choose **Türkçe** or **English** from the **Language** list.
+4. Configure the title, color, width, countdown, and visible rows.
+5. Click **Save**. Changes take effect immediately.
+6. Right-click the panel to refresh, reset its position, or quit.
+
+## Command guide
+
+| Command | Purpose |
 | --- | --- |
-| `deskally start` | Paneli başlatır. Zaten çalışıyorsa ikinci kopya açmaz. |
-| `deskally stop` | Çalışan paneli kapatır. |
-| `deskally restart` | Paneli kapatıp güncel ayarlarla yeniden başlatır. |
-| `deskally status` | Panelin çalışıp çalışmadığını ve PID değerini gösterir. |
-| `deskally logs` | Son 100 günlük satırını gösterir. |
-| `deskally color RENK` | Vurgu rengini değiştirip paneli yeniden başlatır. |
-| `deskally version` | Kurulu sürüm numarasını gösterir. |
-| `deskally help` | Tüm komutların kısa yardımını gösterir. |
+| `deskally start` | Starts the panel and avoids opening a duplicate instance. |
+| `deskally stop` | Stops the running panel. |
+| `deskally restart` | Stops and starts the panel with the latest settings. |
+| `deskally status` | Shows whether the panel is running and prints its PID. |
+| `deskally logs` | Prints the last 100 log lines. |
+| `deskally color COLOR` | Changes the accent color and restarts the panel. |
+| `deskally version` | Prints the installed version. |
+| `deskally help` | Shows the short command reference. |
 
-Türkçe komut eş adları da bulunur: `baslat`, `durdur`, `yenile`, `durum`, `gunluk`, `renk`, `surum` ve `yardim`.
+Turkish command aliases are also available: `baslat`, `durdur`, `yenile`, `durum`, `gunluk`, `renk`, `surum`, and `yardim`.
 
-### Renk komutu
+### Color command
 
-Hazır renkler Türkçe veya İngilizce adla kullanılabilir:
+Preset colors accept English or Turkish names:
 
 ```bash
-deskally color turkuaz
-deskally color mavi
-deskally color kirmizi
-deskally color yesil
-deskally color mor
-deskally color altin
+deskally color cyan
+deskally color blue
+deskally color red
+deskally color green
+deskally color purple
+deskally color gold
 ```
 
-İngilizce eşleri `cyan`, `blue`, `red`, `green`, `purple` ve `gold` şeklindedir. Özel bir renk için altı haneli HEX değeri kullan:
+Their Turkish equivalents are `turkuaz`, `mavi`, `kirmizi`, `yesil`, `mor`, and `altin`. Use a six-digit HEX value for a custom color:
 
 ```bash
 deskally color '#ff8800'
 ```
 
-Renk komutu başlık, dil, sayaç ve görünürlük gibi diğer ayarları korur.
+The color command preserves the title, language, countdown, and visibility settings.
 
-## Paneldeki bilgiler
+## Displayed information
 
-| Etiket | Anlamı |
+| Label | Meaning |
 | --- | --- |
-| `WAN` | İnternette görünen genel IP adresi |
-| `IF` | Varsayılan ağ arayüzü, örneğin `enp10s0` veya `wlan0` |
-| `IP` | Yerel ağdaki IPv4 adresi |
-| `LOC` | Genel IP üzerinden yaklaşık şehir veya elle girilen şehir |
-| `CPU` | İşlemci kullanımı ve bulunabiliyorsa sıcaklığı |
-| `GPU` | Bulunabiliyorsa ekran kartı sıcaklığı |
-| `RAM` | Kullanılan/toplam bellek ve kullanım yüzdesi |
+| `WAN` | The public IP address visible on the internet |
+| `IF` | Default network interface, such as `enp10s0` or `wlan0` |
+| `IP` | IPv4 address on the local network |
+| `LOC` | Approximate city from the public IP, or the manual city value |
+| `CPU` | Processor usage and temperature when available |
+| `GPU` | Graphics processor temperature when available |
+| `RAM` | Used/total memory and usage percentage |
 
-`—` işareti, o bilginin donanımdan ya da sistemden alınamadığını gösterir.
+An em dash (`—`) means the value could not be read from the hardware or operating system.
 
-## Ayarlar
+## Settings
 
-- **Panel adı:** Üst bölümde görünen kişisel başlık.
-- **Dil:** Türkçe veya İngilizce. Seçim kaydedildiğinde panel, menü ve sonraki ayar penceresi çevrilir.
-- **Kronometre günü ve saati:** Geri sayımın ulaşacağı tarih ve saat.
-- **Panel rengi:** Renk seçiciyle vurgu rengini değiştirir.
-- **Panel genişliği:** 160–420 piksel arasında ayarlanır.
-- **Şehir:** Boşsa otomatik bulunur; bir değer yazılırsa `LOC` satırında o değer kullanılır.
-- **Görünürlük seçenekleri:** Geri sayım, WAN IP, yerel IP ve şehir ayrı ayrı kapatılabilir.
-- **Diğer pencerelerin üstünde tut:** Masaüstü ortamı destekliyorsa paneli önde tutar.
+- **Panel name:** Personal title displayed at the top.
+- **Language:** Turkish or English. Saving updates the panel, menu, and next settings window.
+- **Countdown date and time:** Target date and time for the countdown.
+- **Panel color:** Changes the accent through a visual color picker.
+- **Panel width:** Adjustable from 160 to 420 pixels.
+- **City:** Automatic when empty; a manual value replaces the `LOC` result.
+- **Visibility options:** Countdown, WAN IP, local IP, and city can be hidden independently.
+- **Keep above other windows:** Requests always-on-top behavior from the desktop environment.
 
-## Dosya konumları
+## File locations
 
-| Konum | İçerik |
+| Location | Contents |
 | --- | --- |
-| `~/.local/share/deskally/` | Kurulu uygulama dosyaları |
-| `~/.local/bin/deskally` | Kullanıcı komutu |
-| `~/.local/share/applications/deskally.desktop` | Uygulama menüsü kaydı |
-| `~/.config/autostart/deskally.desktop` | Otomatik başlatma kaydı |
-| `~/.config/deskally/config.json` | Kullanıcı ayarları |
-| `~/.local/state/deskally/` | PID, konum ve günlük dosyaları |
+| `~/.local/share/deskally/` | Installed application files |
+| `~/.local/bin/deskally` | User command |
+| `~/.local/share/applications/deskally.desktop` | Application menu entry |
+| `~/.config/autostart/deskally.desktop` | Login autostart entry |
+| `~/.config/deskally/config.json` | User settings |
+| `~/.local/state/deskally/` | PID, position, and log files |
 
-## Gizlilik ve ağ kullanımı
+## Privacy and network use
 
-Yerel IP ve sistem değerleri bilgisayarda okunur. WAN IP açıksa panel sırasıyla Cloudflare Trace, ipify, ident.me veya ifconfig.me hizmetlerinden birine kısa bir istek gönderebilir. Şehir açıksa ipinfo.io, ipapi.co, ipwho.is veya ip-api.com kaynaklarından biri kullanılabilir.
+Local IP and system values are read locally. When WAN IP is enabled, the panel may send a short request to Cloudflare Trace, ipify, ident.me, or ifconfig.me. When city detection is enabled, it may use ipinfo.io, ipapi.co, ipwho.is, or ip-api.com.
 
-Bu hizmetler isteği gönderen genel IP adresini doğal olarak görür. WAN IP ve şehir satırları ayarlardan ayrı ayrı kapatılabilir. Şehir alanına elle değer girildiğinde şehir sorgusu yapılmaz.
+These services naturally see the public IP making the request. WAN IP and city can be disabled independently in settings. Entering a manual city prevents the city lookup.
 
-## Sorun giderme
+## Troubleshooting
 
-Panel açılmıyorsa önce durum ve günlükleri kontrol et:
+If the panel does not open, check its status and logs first:
 
 ```bash
 deskally status
@@ -155,57 +159,57 @@ deskally logs
 deskally restart
 ```
 
-`deskally: command not found` hatasında `~/.local/bin` dizininin PATH içinde olduğundan emin ol veya şu tam yolu kullan:
+If the shell reports `deskally: command not found`, make sure `~/.local/bin` is in PATH or use the full path:
 
 ```bash
 ~/.local/bin/deskally restart
 ```
 
-Şehir görünmüyorsa internet bağlantısını kontrol et veya **Ayarlar → Şehir** alanına adı elle yaz. Sıcaklık `—` görünüyorsa `lm-sensors` kurup sistemin sensör desteğini denetle. Bir satır ayarlarda açık olduğu halde görünmüyorsa paneli `deskally restart` ile yeniden başlat. Panel ekran dışında kaldıysa sağ tık menüsünden **Konumu sıfırla** seçeneğini kullan.
+If the city is empty, check the internet connection or enter it in **Settings → City**. If a temperature shows `—`, install `lm-sensors` and verify that the hardware exposes a supported sensor. If an enabled row is missing, restart the panel. If the panel is outside the visible desktop, use **Reset position** in the right-click menu.
 
-## Güncelleme
+## Updating
 
-Yeni kaynak kodunu indirdikten sonra proje dizininde kurucuyu yeniden çalıştır:
+After downloading a newer source version, run the installer again inside the project directory:
 
 ```bash
 ./install.sh
 ```
 
-Kişisel ayarlar ve panel konumu korunur.
+Personal settings and the saved panel position are preserved.
 
-## Kaldırma
+## Uninstalling
 
-Proje dizininde:
+From the project directory:
 
 ```bash
 ./uninstall.sh
 ```
 
-Kaldırıcı uygulamayı, komutu, menü kaydını ve otomatik başlatmayı siler. Kişisel ayar dosyasını daha sonra yeniden kurabilmen için korur. Ayarları da silmek istersen ayrıca şunu çalıştır:
+The uninstaller removes the application, command, menu entry, and autostart entry. It preserves personal settings for a future installation. To remove settings and state as well, run:
 
 ```bash
 rm -rf ~/.config/deskally ~/.local/state/deskally
 ```
 
-## Geliştirme
+## Development
 
-Kaynak koddan çalıştırmak ve testleri yürütmek için:
+Run the source version and the test suite with:
 
 ```bash
 python3 -m deskally
 python3 -m unittest discover -s tests -v
 ```
 
-Ana dizinler:
+Main directories:
 
-- `deskally/`: GTK arayüzü, veri toplayıcılar, yapılandırma, çeviriler ve tema kodu
-- `scripts/`: birleşik terminal komutu
-- `assets/`: uygulama simgesi ve `.desktop` şablonu
-- `tests/`: ağ kullanmadan çalışan temel birim testleri
-- `docs/`: GitHub önizleme görseli
+- `deskally/`: GTK interface, collectors, configuration, translations, and theme code
+- `scripts/`: unified terminal command
+- `assets/`: application icon and `.desktop` template
+- `tests/`: core unit tests that run without network access
+- `docs/`: GitHub preview image
 
-Katkı süreci için [CONTRIBUTING.md](CONTRIBUTING.md) dosyasına bak.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for the contribution workflow.
 
-## Lisans
+## License
 
-DeskALLY [MIT Lisansı](LICENSE) ile yayımlanır.
+DeskALLY is released under the [MIT License](LICENSE).

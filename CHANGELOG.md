@@ -1,78 +1,78 @@
-# Değişiklik günlüğü
+# Changelog
+
+[English](CHANGELOG.md) · [Türkçe](CHANGELOG.tr.md)
+
+## Unreleased
+
+- Default to English while keeping Turkish available in settings.
+- Use English documentation by default, with links to Turkish versions.
+- Replace promotional artwork with a panel-only preview using example data.
+- Use English installer and command-line messages; retain Turkish command aliases.
 
 ## 0.7.0 — 2026-10-08
 
-- Projenin adı DeskALLY olarak değiştirildi.
-- Ana terminal komutu `deskally` oldu.
-- Uygulama menüsü, simge, kurulum yolları ve iki dildeki kılavuzlar yeni ada taşındı.
-- Eski KundALLY Panel ayarlarının ve pencere konumunun otomatik taşınması eklendi.
-- Eski kurulum dosyaları yeni kurulum sırasında temizleniyor.
+- Rename the project to DeskALLY and the main command to `deskally`.
+- Update menu entries, icons, installation paths, and bilingual guides.
+- Migrate legacy KundALLY Panel settings and window position automatically.
+- Clean up legacy installation files during installation.
 
 ## 0.6.0 — 2026-10-08
 
-- Panel arayüzüne Türkçe ve İngilizce dil seçimi eklendi.
-- Tarih, geri sayım, ayarlar, sağ tık menüsü ve açıklamalar seçilen dile bağlandı.
-- Hazır renklerin İngilizce adları komut satırına eklendi.
-- Türkçe ve İngilizce ayrıntılı kurulum ve kullanım kılavuzları hazırlandı.
-- Örnek yapılandırma güncel ayarların tamamını içerecek şekilde yenilendi.
+- Add Turkish and English interface selection for dates, countdowns, settings, menus, and descriptions.
+- Add English color aliases and bilingual installation and usage guides.
+- Update the example configuration to include all current settings.
 
 ## 0.5.0 — 2026-10-08
 
-- Bütün terminal işlemleri tek `kundally-panel` komutu altında toplandı.
-- Başlatma, kapatma, yenileme, durum, günlük ve renk komutları standartlaştırıldı.
-- Eski `restart-panel`, `kundally-panelctl` ve `panel-mavi` türü komutlar kaldırıldı.
-- Uygulamanın iç çalıştırıcısı kullanıcı komutlarından ayrıldı.
+- Consolidate terminal operations under `kundally-panel`.
+- Standardize start, stop, restart, status, logs, and color commands.
+- Remove legacy commands and separate the internal launcher from user commands.
 
 ## 0.4.1 — 2026-10-08
 
-- Ağ ve sistem satırlarının eski pencere yüksekliği tarafından kesilmesi düzeltildi.
-- Panel, açık ayarlara göre içeriğinin doğal yüksekliğine otomatik uzuyor.
-- Satırlar açılıp kapatıldığında pencere boyutu anında yeniden hesaplanıyor.
-- Kayıtlı konum ekran dışına taşıyorsa görünür alana geri alınıyor.
+- Fix clipped network and system rows by resizing to the visible content.
+- Recalculate window size when rows are toggled.
+- Move saved off-screen positions back into the visible area.
 
 ## 0.4.0 — 2026-10-08
 
-- WAN IP, yerel IP ve şehir görünürlüğü için ayrı ayarlar eklendi.
-- Otomatik şehir bulmaya dört IPv4 kaynağı ve yedek yöntem eklendi.
-- Şehir adını elle belirleme seçeneği eklendi.
-- RAM satırına kullanım yüzdesi eklendi.
+- Add separate visibility settings for WAN IP, local IP, and city.
+- Add four IPv4 city lookup sources with a fallback method and manual city entry.
+- Add RAM usage percentage.
 
 ## 0.3.0 — 2026-10-08
 
-- Terminalden kullanılabilen altı renk hazır ayarı eklendi.
-- Özel renkler için `panel-renk '#RRGGBB'` komutu eklendi.
-- Renk değişiminde panelin bütün vurgu tonlarının birlikte değişmesi sağlandı.
-- Renk değiştirilirken diğer kullanıcı ayarları korunuyor.
+- Add six command-line color presets and custom HEX colors.
+- Update all accent tones together while preserving other settings.
 
 ## 0.2.3 — 2026-10-08
 
-- Ağ arayüzünün altında ayrı bir yerel `IP` satırı eklendi.
-- Ağ bölümü `WAN`, `IF`, `IP`, `LOC` sırasına getirildi.
+- Add a separate local IP row below the network interface.
+- Order network rows as WAN, IF, IP, and LOC.
 
 ## 0.2.2 — 2026-10-08
 
-- Eski panel sürecinin yeni sürümü engellemesi düzeltildi.
-- IP satırı daha açık olması için `WAN` yerine `IP` olarak adlandırıldı.
-- Yerel IP için `ip`, NetworkManager ve `hostname` yedekleri eklendi.
-- Görüntülenen IP sonucu tanılama günlüğüne eklendi.
+- Fix an old panel process preventing the new version from starting.
+- Rename the IP row from WAN to IP for clarity.
+- Add local IP fallbacks using ip, NetworkManager, and hostname.
+- Log the displayed IP for diagnostics.
 
 ## 0.2.1 — 2026-10-08
 
-- Dış IP sorgusuna Debian'da çalışan IPv4 `curl` yedeği eklendi.
-- Dış IP beklenirken yerel IP'nin hemen gösterilmesi sağlandı.
-- IP alınamadığında boş değer yerine açık bağlantı durumu gösteriliyor.
+- Add an IPv4 curl fallback for public IP queries on Debian.
+- Show the local IP while waiting for the public IP.
+- Show connection status when an IP is unavailable.
 
 ## 0.2.0 — 2026-10-08
 
-- Kronometre için takvim ve saat seçici eklendi.
-- Panel adı ve rengi daha kolay değiştirilebilir hâle getirildi.
-- Genel IP ve şehir bilgisine yedek veri kaynakları eklendi.
+- Add calendar and time selectors for the countdown.
+- Update panel title and color controls.
+- Add fallback sources for public IP and city information.
 
 ## 0.1.0 — 2026-10-08
 
-- İlk kullanılabilir prototip.
-- Fareyle doğrudan sürükleme ve konumu hatırlama.
-- CPU, GPU, RAM, ağ arayüzü, genel IP ve şehir bilgisi.
-- Yapılandırılabilir geri sayım, başlık, renk ve genişlik.
-- Sağ tık menüsü ile ayarlar, yenileme ve konum sıfırlama.
-- Kullanıcı düzeyinde kurulum, otomatik başlatma ve kaldırma betikleri.
+- Initial usable prototype with mouse dragging and saved position.
+- Display CPU, GPU, RAM, network interface, public IP, and city.
+- Add configurable countdown, title, color, and width.
+- Add a context menu for settings, refresh, and position reset.
+- Add per-user installation, autostart, and removal scripts.

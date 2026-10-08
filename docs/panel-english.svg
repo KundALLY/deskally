@@ -14,9 +14,9 @@
       <circle cx="8" cy="9" r="6" fill="none" stroke="#00e5ff" stroke-width="3"/>
       <text x="22" y="14" fill="#00e5ff" font-weight="700" font-size="17">DeskALLY</text>
       <text x="213" y="14" fill="#fff" font-weight="700" font-size="14" text-anchor="end">01:27</text>
-      <text y="38" fill="#cfefff" font-weight="700" font-size="10">Perşembe 8 Ekim 2026</text>
+      <text y="38" fill="#cfefff" font-weight="700" font-size="10">Thursday 8 October 2026</text>
       <rect y="49" width="216" height="27" rx="6" fill="#00e5ff" fill-opacity=".10" stroke="#00e5ff" stroke-opacity=".28"/>
-      <text x="108" y="67" fill="#fff" font-size="11" font-weight="700" text-anchor="middle">310 GÜN • 22:32:41</text>
+      <text x="108" y="67" fill="#fff" font-size="11" font-weight="700" text-anchor="middle">310 DAYS • 22:32:41</text>
       <path d="M0 89h216" stroke="#00e5ff" opacity=".55"/>
       <text y="108" fill="#00e5ff" font-size="11" font-weight="700">NETWORK</text>
       <g font-size="11" font-weight="700">

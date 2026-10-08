@@ -1,8 +1,8 @@
 # DeskALLY
 
-[Türkçe](README.md) · [English](README.en.md)
+[English](README.md) · [Türkçe](README.tr.md)
 
-![DeskALLY preview](docs/panel-istanbul.svg)
+![DeskALLY preview](docs/panel-english.svg)
 
 DeskALLY is an open source GTK 3 application that displays essential system and network information in a compact Linux desktop window. It shows CPU, GPU, RAM, IP addresses, city, date, time, and a personal countdown.
 
@@ -57,6 +57,10 @@ To install without starting the panel immediately:
 ```bash
 ./install.sh --no-start
 ```
+
+## Language
+
+English is the default language. To use Turkish, open **Settings → Language**, select **Türkçe**, and click **Save**.
 
 ## First use
 

@@ -9,21 +9,21 @@ runner="${DESKALLY_RUNNER:-$HOME/.local/libexec/deskally-app}"
 
 usage() {
   cat <<'EOF'
-Kullanım / Usage: deskally KOMUT
+Usage: deskally COMMAND
 
-  start                 Paneli başlat / Start the panel
-  stop                  Paneli kapat / Stop the panel
-  restart               Yeniden başlat / Restart the panel
-  status                Durumu göster / Show status
-  logs                  Günlükleri göster / Show recent logs
-  color RENK/COLOR      Rengi değiştir / Change the accent color
-  version               Sürümü göster / Show version
-  help                  Yardımı göster / Show this help
+  start                 Start the panel
+  stop                  Stop the panel
+  restart               Restart the panel
+  status                Show status
+  logs                  Show recent logs
+  color COLOR           Change the accent color
+  version               Show version
+  help                  Show this help
 
-Renkler / Colors: turkuaz/cyan, mavi/blue, kirmizi/red,
-                  yesil/green, mor/purple, altin/gold veya/or #RRGGBB
+Colors: cyan, blue, red, green, purple, gold or #RRGGBB
+Turkish command and color aliases are also supported.
 
-Örnek / Example: deskally color mavi
+Example: deskally color blue
 EOF
 }
 
@@ -37,19 +37,19 @@ is_running() {
 start_panel() {
   mkdir -p "$state_dir"
   if is_running; then
-    echo "DeskALLY zaten çalışıyor."
+    echo "DeskALLY is already running."
     return 0
   fi
   rm -f "$pid_file"
   nohup "$runner" </dev/null >>"$log_file" 2>&1 &
   for _ in {1..40}; do
     if is_running; then
-      echo "DeskALLY başlatıldı."
+      echo "DeskALLY started."
       return 0
     fi
     sleep 0.1
   done
-  echo "Panel başlatılamadı. Günlük: $log_file" >&2
+  echo "Could not start the panel. Log: $log_file" >&2
   return 1
 }
 
@@ -68,21 +68,21 @@ stop_panel() {
     fi
   fi
   rm -f "$pid_file"
-  echo "DeskALLY kapatıldı."
+  echo "DeskALLY stopped."
 }
 
 show_status() {
   if is_running; then
-    echo "DeskALLY çalışıyor (PID $(cat "$pid_file"))."
+    echo "DeskALLY is running (PID $(cat "$pid_file"))."
   else
-    echo "DeskALLY çalışmıyor."
+    echo "DeskALLY is not running."
     return 1
   fi
 }
 
 set_color() {
   if [[ $# -ne 1 ]]; then
-    echo "Kullanım: deskally color RENK" >&2
+    echo "Usage: deskally color COLOR" >&2
     return 2
   fi
   PYTHONPATH="$app_root${PYTHONPATH:+:$PYTHONPATH}" \
@@ -100,7 +100,7 @@ case "${1:-help}" in
     if [[ -f "$log_file" ]]; then
       tail -n 100 "$log_file"
     else
-      echo "Henüz günlük kaydı yok."
+      echo "No logs yet."
     fi
     ;;
   color|renk) shift; set_color "$@" ;;
@@ -109,5 +109,5 @@ case "${1:-help}" in
       python3 -c 'from deskally import __version__; print(__version__)'
     ;;
   help|-h|--help|yardim) usage ;;
-  *) echo "Bilinmeyen komut: $1" >&2; usage >&2; exit 2 ;;
+  *) echo "Unknown command: $1" >&2; usage >&2; exit 2 ;;
 esac

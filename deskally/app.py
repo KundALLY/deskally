@@ -104,8 +104,8 @@ class SettingsDialog(Gtk.Dialog):
 
         grid.attach(Gtk.Label(label=translate("language"), xalign=0), 0, 1, 1, 1)
         self.language_combo = Gtk.ComboBoxText()
-        self.language_combo.append("tr", "Türkçe")
         self.language_combo.append("en", "English")
+        self.language_combo.append("tr", "Türkçe")
         self.language_combo.set_active_id(language)
         grid.attach(self.language_combo, 1, 1, 1, 1)
 
@@ -202,7 +202,7 @@ class SettingsDialog(Gtk.Dialog):
         )
         return {
             "title": self.title_entry.get_text().strip() or "DeskALLY",
-            "language": self.language_combo.get_active_id() or "tr",
+            "language": self.language_combo.get_active_id() or "en",
             "countdown_target": target.isoformat(),
             "show_countdown": self.countdown_check.get_active(),
             "show_public_ip": self.wan_check.get_active(),

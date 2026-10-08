@@ -174,7 +174,7 @@ def local_ip() -> str:
     return "—"
 
 
-def public_ip(language: str = "tr") -> str:
+def public_ip(language: str = "en") -> str:
     sources = (
         ("https://www.cloudflare.com/cdn-cgi/trace", True),
         ("https://api.ipify.org", False),
@@ -270,7 +270,7 @@ def localized_date(language: str, moment: datetime | None = None) -> str:
     return turkish_date(moment)
 
 
-def countdown(target_text: str, moment: datetime | None = None, language: str = "tr") -> str:
+def countdown(target_text: str, moment: datetime | None = None, language: str = "en") -> str:
     moment = moment or datetime.now()
     try:
         target = datetime.fromisoformat(target_text)

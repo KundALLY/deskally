@@ -14,7 +14,7 @@ LEGACY_APP_ID = "kundally-panel"
 
 DEFAULT_CONFIG: dict[str, Any] = {
     "title": "DeskALLY",
-    "language": "tr",
+    "language": "en",
     "countdown_target": "2027-08-15T00:00:00",
     "show_countdown": True,
     "show_public_ip": True,

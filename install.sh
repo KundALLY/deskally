@@ -10,7 +10,7 @@ autostart_dir="${XDG_CONFIG_HOME:-$HOME/.config}/autostart"
 icons_dir="$HOME/.local/share/icons/hicolor/scalable/apps"
 
 if ! python3 -c 'import gi; gi.require_version("Gtk", "3.0"); from gi.repository import Gtk' 2>/dev/null; then
-  echo "Eksik paketler var. Önce şunu çalıştır:" >&2
+  echo "Missing dependencies. Run this first:" >&2
   echo "  sudo apt install python3-gi gir1.2-gtk-3.0" >&2
   exit 1
 fi
@@ -56,4 +56,4 @@ if [[ "${1:-}" != "--no-start" ]]; then
   "$bin_dir/deskally" restart
 fi
 
-echo "Kurulum tamamlandı. Uygulama menüsünde 'DeskALLY' diye arayabilirsin."
+echo "Installation complete. Look for 'DeskALLY' in the application menu."

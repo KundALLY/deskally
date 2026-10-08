@@ -13,4 +13,4 @@ rm -f "${XDG_CONFIG_HOME:-$HOME/.config}/autostart/deskally.desktop" \
 rm -f "$HOME/.local/share/icons/hicolor/scalable/apps/deskally.svg" \
   "$HOME/.local/share/icons/hicolor/scalable/apps/kundally-panel.svg"
 
-echo "DeskALLY kaldırıldı. Kişisel ayarlar korunmuştur."
+echo "DeskALLY removed. Personal settings have been preserved."

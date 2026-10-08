@@ -27,7 +27,7 @@ class CollectorTests(unittest.TestCase):
 
     def test_countdown(self):
         now = datetime(2026, 10, 8, 10, 0, 0)
-        self.assertEqual(countdown("2026-10-09T12:02:03", now), "001 GÜN • 02:02:03")
+        self.assertEqual(countdown("2026-10-09T12:02:03", now, "tr"), "001 GÜN • 02:02:03")
 
     def test_english_date_and_countdown(self):
         now = datetime(2026, 10, 8, 10, 0, 0)
@@ -100,11 +100,11 @@ class ConfigTests(unittest.TestCase):
             path.write_text("not json")
             self.assertEqual(load_config(path), DEFAULT_CONFIG)
 
-    def test_unknown_language_falls_back_to_turkish(self):
+    def test_unknown_language_falls_back_to_english(self):
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "config.json"
             path.write_text('{"language": "de"}')
-            self.assertEqual(load_config(path)["language"], "tr")
+            self.assertEqual(load_config(path)["language"], "en")
 
     def test_legacy_config_migrates_to_deskally_defaults(self):
         with tempfile.TemporaryDirectory() as directory:
