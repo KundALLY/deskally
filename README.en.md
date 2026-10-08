@@ -2,7 +2,7 @@
 
 [Türkçe](README.md) · [English](README.en.md)
 
-![DeskALLY preview](docs/preview.svg)
+![DeskALLY preview](docs/panel.svg)
 
 DeskALLY is an open source GTK 3 application that displays essential system and network information in a compact Linux desktop window. It shows CPU, GPU, RAM, IP addresses, city, date, time, and a personal countdown.
 
